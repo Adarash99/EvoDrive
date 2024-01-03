@@ -1,55 +1,46 @@
-#import carla
+import carla
 from random import randint
-#import time
-#from PIL import Image
+import random
 import os
 import sys
 import time
 import xml.etree.ElementTree as ET
-#import leaderboard.leaderboard.leaderboard_evaluator
-#from leaderboard.leaderboard.utils.statistics_manager import StatisticsManager, FAILURE_MESSAGES
+
+from random_tester import RandomTester
+
+####################
+# PARAMETERS
+
+debug_time = 5
+
+##############################
 
 
-# variables for xml creation
+#function to print a route to screen
+def debug_route(route):
+    debug = world.debug
+    c = 0
+    for point in route:
+        debug.draw_string(point.transform.location, 'o', draw_shadow=False, color=carla.Color(r=c, g=c, b=c), life_time=debug_time, persistent_lines=True)
+        c = c + 5
+    #show the route 
+    spectator.set_transform(carla.Transform(carla.Location(-5,0,350), carla.Rotation(268,0,0)))
 
-weathers_list = ['route_percentage', 'cloudiness', 'fog_density', 'fog_distance', 'precipitation', 'precipitation_deposits', 'sun_altitude_angle', 'sun_azimuth_angle', 'wetness', 'wind_intensity']
-weather_values = [100, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+##########################
 
-positions = [['56.449505', '205.120041', '0.953773'],['185.469559', '160.977905', '0.930790']]
+while True:        
+    #junction_ids = set([])
+    
+    # for point in route:
+    #     if point.is_junction:
+    #         junction_ids.add(point.junction_id)
+    #         print('JUNCTION: ', point.junction_id)
+            
+    #debug_route(route)
+    #print('Total number of junctions = ', len(junction_ids))
+    
+    tester = RandomTester(2000)
+    tester.generate_scene()
+    os.system("./leaderboard/scripts/run_evaluation.sh")
+    time.sleep(5)
 
-
-def generate_xml():
-    routes = ET.Element('routes')
-    route = ET.SubElement(routes, 'route')
-    route.set('id', '0')
-    route.set('town', 'Town05')
-    weathers = ET.SubElement(route, 'weathers')
-    weather = ET.SubElement(weathers, 'weather')
-
-    for weather_element, weather_value in zip(weathers_list, weather_values):
-        weather.set(weather_element, str(weather_value))
-    waypoints = ET.SubElement(route, 'waypoints')
-
-    for position in positions:
-        waypoint = ET.SubElement(waypoints, 'position')
-        waypoint.set('x', position[0])
-        waypoint.set('y', position[1])
-        waypoint.set('z', position[2])
-
-    scenarios = ET.SubElement(route, 'scenarios')
-    tree = ET.ElementTree(routes)
-    # Write XML file
-    tree.write('./leaderboard/data/custom_route.xml')
-    print(ET.tostring(routes, encoding='utf8'))
-
-# generate 10 random weathers
-for i in range (10):
-    for x in range(len(weather_values)):
-        if(x>0):
-            weather_values[x] = randint(0, 100)
-    print(weather_values)
-    generate_xml()
-    #os.system("./leaderboard/scripts/run_evaluation.sh")
-
-# generate_xml()
-# os.system("./leaderboard/scripts/run_evaluation.sh")

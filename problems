@@ -1,0 +1,41 @@
+NSGA2 algorithm
+objective functions
+parameters
+
+- change weather DONE
+- create a route aroud a potential scenario - limit the route to be a short one DONE
+- create code for the scenario TODO
+- create additional actors (cars or pedestrians) - choose from all possible situations TODO
+- run
+
+-------------------------------------------------------------------------------
+
+
+is it a matter of hard-coding all possible spawn points and routes or is there a smarter way!!?? SMARTER WAY FOUNDDD
+objective functions -> what can we measure from the simulation? infractions?
+how do i get a list of all scenarios??? found the list of scenarios
+get carla pid to operate the vehicle!!! intefuser is way to slow (DONE)
+
+------------------------------------------------------------------------------
+
+------------------ 2024 -------------------------------------------------
+
+remove background actors! - DONE (line changed in route_scenario.py file: behavior.add_child(BackgroundBehavior(self.ego_vehicles[0], self.route, name="BackgroundActivity"))
+you should be able to create your framework with random data generation before attempting to introduce the evolutionary algorithm!!!! TRYING
+
+now i need to put all the scenarios in a python file so i can specify the parameters for them
+how do i know where to set trigger points for the scenarios?
+implement person crossing scenario!!! ->>>>>>>>>>>>>>> do next
+
+--------- future----------
+
+how many parameters do we have in total?
+how can we set the objective functions?
+
+
+----------- not working -------------
+
+
+i have deleted the traffic_manager parts in the leaderboard_evaluator.py file but the background traffic is still there(?)  -- this is not happening
+
+

@@ -1,3 +1,3 @@
 #!/bin/bash
 
-docker build --no-cache -t ctester:v1 .
+docker build -t ctester:v2 .
