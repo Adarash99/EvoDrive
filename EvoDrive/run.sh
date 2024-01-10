@@ -22,10 +22,11 @@ sudo chown -R carla ${LEADERBOARD_ROOT} ${SCENARIO_RUNNER_ROOT}
 
 export PORT=2000
 export ROUTES=${LEADERBOARD_ROOT}/data/custom_route.xml
-#export ROUTES=${LEADERBOARD_ROOT}/data/routes_devtest.xml
+#export ROUTES=${LEADERBOARD_ROOT}/data/routes_training.xml
 export REPETITIONS=1
 export DEBUG_CHALLENGE=1
 
+#export TEAM_AGENT=${LEADERBOARD_ROOT}/leaderboard/autoagents/npc_agent_modified.py
 #export TEAM_AGENT=${LEADERBOARD_ROOT}/leaderboard/autoagents/human_agent.py
 export TEAM_AGENT=${LEADERBOARD_ROOT}/leaderboard/autoagents/npc_agent.py
 

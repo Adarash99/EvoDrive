@@ -25,7 +25,18 @@ you should be able to create your framework with random data generation before a
 
 now i need to put all the scenarios in a python file so i can specify the parameters for them
 how do i know where to set trigger points for the scenarios?
-implement person crossing scenario!!! ->>>>>>>>>>>>>>> do next
+implement person crossing scenario!!! ->>>>>>>>>>>>>>> done
+working on perfecting the crossing scenario 
+let's try to select a trigger point close to a junction - this is not really working, might need to hard code all possible trigger point for all scenarios
+
+prettify xml done
+xml works with all scenarios and attributes
+i can use all scenarios
+just need to test each individual one
+
+
+route creator is having some problems
+
 
 --------- future----------
 
