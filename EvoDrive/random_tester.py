@@ -1,19 +1,20 @@
 import carla
 import random
+import math
 import xml.etree.ElementTree as ET
 import time
-#from parameters import *
+
 from agents.navigation.global_route_planner import GlobalRoutePlanner
 from agents.navigation.local_planner import RoadOption
 
 
 debug_time = 15
 min_route_distance = 300
-max_route_distance = 600
+max_route_distance = 800
 
 min_number_of_scenarios = 1
 max_number_of_scenarios = 3
-min_distance_between_scenarios = 100
+min_distance_between_scenarios = 50
 
 
 SCENARIO_TYPES ={
@@ -218,7 +219,17 @@ WEATHERS = {'route_percentage': [100,100],
                  'wind_intensity': [0,100]
                  }
 
+TOWNS = ['Town01', 
+         'Town02', 
+         'Town03', 
+         'Town04', 
+         'Town05', 
+         'Town06', 
+         'Town07', 
+         'Town10HD', 
+         'Town12']
 
+WORKING_SCENARIOS = {}
 
 class RandomTester():  
     
@@ -227,28 +238,37 @@ class RandomTester():
     __map = None
     __world = None
     __client = None
-    __town = "Town10HD"
-    #__route_distance = 600
+    __town = ''
+    __route_distance = 0
+    __number_of_scenarios = 0
     
     def __init__(self, port=2000):
         self.__client = carla.Client('localhost', port)
         self.__client.set_timeout(50)
-        
-        # TODO
-        # harcoding Town05 for now
-        self.__client.load_world(str(self.__town)) 
-        
-        self.__world = self.__client.get_world()
-        self.__map = self.__world.get_map()
-        
+    
         
     ##################################################################
     ########  MAIN ###################################################
     
     def generate_scene(self):
+        
+        # choose map
+        self.__town = random.choice(TOWNS)
+        print("\033[1m> Loading map for {}\033[0m".format(self.__town))
+        self.__client.load_world(str(self.__town)) 
+        self.__world = self.__client.get_world()
+        self.__map = self.__world.get_map()
+        
+        print("\033[1m> Generating route\033[0m")
         route = self.__generate_route()
+        
+        print("\033[1m> Generating scenario\033[0m")
         scen_type_list, scenario_attributes_list = self.__generate_scenarios(route)
+        
+        print("\033[1m> Generating weather\033[0m")
         weather = self.__generate_weather()
+        
+        print("\033[1m> Writing parameters to file\033[0m")
         self.__generate_xml(route, weather, scen_type_list, scenario_attributes_list)
         
     ##################################################################
@@ -286,26 +306,28 @@ class RandomTester():
     
         while not correct:
             start  = self.__map.get_waypoint(random.choice(all_spawn_points).location, project_to_road=True, lane_type=carla.LaneType.Driving)
-            end = self.__map.get_waypoint(random.choice(all_spawn_points).location, project_to_road=True, lane_type=carla.LaneType.Driving)
-            distance = 0
-            route = []
+            end = self.__map.get_waypoint(random.choice(all_spawn_points).location, project_to_road=True, lane_type=carla.LaneType.Driving)        
             distance, route = self.__calculate_route(start, end, grp)
            
             if distance > min_route_distance and distance < max_route_distance :
                 correct = True
           
+          
+        self.__number_of_scenarios = math.floor(distance / min_distance_between_scenarios)
+        
         ######################################
         # For debugging
         for point in route:
             debug.draw_string(point[0].transform.location, 'o', draw_shadow=False, color=carla.Color(r=0, g=128, b=0), life_time=debug_time, persistent_lines=True)
         debug.draw_string(start.transform.location, 'o', draw_shadow=False, color=carla.Color(r=255, g=0, b=0), life_time=debug_time, persistent_lines=True)
         debug.draw_string(end.transform.location, 'o', draw_shadow=False, color=carla.Color(r=0, g=0, b=255), life_time=debug_time, persistent_lines=True)
-        print('Distance is ' + str(distance))
-        print('Number of points in route is ' + str(len(route)))
+        print('\t Distance is ' + str(distance))
+        print('\t Number of points in route is ' + str(len(route)))
         spectator = self.__world.get_spectator()
-        spectator.set_transform(carla.Transform(carla.Location(-5,0,350), carla.Rotation(268,0,0)))
+        spectator.set_transform(carla.Transform(carla.Location((start.transform.location.x - end.transform.location.x), (start.transform.location.y - end.transform.location.y),350), carla.Rotation(268,0,0)))
         time.sleep(debug_time)
         #######################################
+        
         
         return route
     
@@ -317,23 +339,21 @@ class RandomTester():
             if (route[x][1] != RoadOption.LANEFOLLOW and route[x-1][1] != RoadOption.LANEFOLLOW):
                 if(route[x-2][1] == RoadOption.LANEFOLLOW):
                     viable_wp.append(route[x-2][0])         
-        print(viable_wp)
         
-        print('we have ' + str(len(viable_wp)) + ' viable waypoints!!!')
+        #print('we have ' + str(len(viable_wp)) + ' viable waypoints!!!')
         return viable_wp
 
     #TODO
     def __generate_scenarios(self, route):
-        number_of_scenarios = random.randint(min_number_of_scenarios, max_number_of_scenarios)
         
         # select scenario type from the list
         
-        viable_wp = self.get_waypoints_before_junctions(route)
+        #viable_wp = self.get_waypoints_before_junctions(route)
         
         scen_type_list = []
         scenario_attributes_list = []
         
-        for n in range(0,3):
+        for n in range(0,1):
                    
             scen_type = 'HardBreakRoute'
             #wp = viable_wp[n]

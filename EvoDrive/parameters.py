@@ -1,6 +1,5 @@
 
 
-
 weathers_list = {'cloudiness': [0,100], 
                  'fog_density': [0,100], 
                  'fog_distance': [0,100], 
