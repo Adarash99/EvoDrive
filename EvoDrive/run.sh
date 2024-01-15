@@ -52,5 +52,5 @@ echo "Carla PID=$PID"
 sleep 10
 
 #./leaderboard/scripts/run_evaluation.sh
-
-python3.7 ./demo.py
+python3.7 ./ga_tester.py
+#python3.7 ./demo.py
