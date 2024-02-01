@@ -1,7 +1,7 @@
 #FROM ubuntu:18.04
 FROM nvidia/cudagl:10.1-devel-ubuntu18.04
 RUN mkdir -p EvoDrive
-WORKDIR /CTESTER
+WORKDIR /EvoDrive
 RUN rm /etc/apt/sources.list.d/cuda.list
 RUN rm /etc/apt/sources.list.d/nvidia-ml.list
 RUN apt-get update 

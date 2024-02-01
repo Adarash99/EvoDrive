@@ -65,31 +65,22 @@ def add_data(start, tmap, world, end, grp):
 
 
 
-n = 1
-
-while True:        
-    
-    # client = carla.Client('localhost', 2000)
-    # client.set_timeout(15)
-    # client.load_world(str('Town05')) 
-    
-    # world = client.get_world()
-    # tmap = world.get_map()
-    # all_spawn_points = tmap.get_spawn_points()
-    # debug = world.debug
-    
-    # spectator = world.get_spectator()
-    # spectator.set_transform(carla.Transform(carla.Location(-5,0,350), carla.Rotation(268,0,0)))
+def main_function(n):
     print("\n\033[1m========= Generating Random Scene_{} =========\033[0m".format(n))
     try:
         tester = RandomTester(2000)
         tester.generate_scene()
         os.system("./leaderboard/scripts/run_evaluation.sh")
+        n = n + 1
+        main_function(n)
     except Exception as e:
         print(e)
         print('TRYING TO RESTART CARLA')
         n = n - 1 
         os.system("./launch_carla.sh")
         time.sleep(30)
+        main_function(n)
 
-    n = n + 1
+    
+
+main_function(1)

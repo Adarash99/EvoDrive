@@ -1,27 +1,51 @@
 from pymoo.algorithms.soo.nonconvex.ga import GA
+from pymoo.operators.sampling.rnd import FloatRandomSampling
+from pymoo.operators.selection.rnd import RandomSelection
+from pymoo.operators.crossover.sbx import SBX
+
+from pymoo.operators.mutation.pm import PolynomialMutation
+from pymoo.operators.mutation.bitflip import BitflipMutation
+
 from pymoo.core.problem import ElementwiseProblem
 from pymoo.optimize import minimize
 from pymoo.termination import get_termination
 import os
 import numpy as np
-import xml.etree.ElementTree as ET
+import time
 import json
+import math
+import carla
+import psutil
 
-WEATHERS = {'route_percentage': [100,100],
-                 'cloudiness': [0,100], 
-                 'fog_density': [0,10],  #[0,100]
-                 'fog_distance': [0,10], #[0,100]
-                 'precipitation': [0,100], 
-                 'precipitation_deposits': [0,100], 
-                 'sun_altitude_angle': [-90,90], 
-                 'sun_azimuth_angle': [0,360], 
-                 'wetness': [0,100], 
-                 'wind_intensity': [0,100]
-                 }
+from agents.navigation.global_route_planner import GlobalRoutePlanner
+from parameters import *
+from utils import generate_xml
+from utils import save_route_data
+
 
 def run_simulation(x):
     
-    weather_values = list(np.around(np.array(x),1)) 
+    #town = TOWNS[int(round(x[9]))]
+    
+    start = x[9]
+    end = x[10]
+    print("\033[1m> Loading map for {}\033[0m".format(town))
+    # carla connection
+    client = carla.Client('localhost', 2000)
+    client.set_timeout(50)
+    client.load_world(town) 
+    world = client.get_world()
+    tmap = world.get_map()  
+    
+    print("\033[1m> Generating route\033[0m")
+    all_spawn_points = tmap.get_spawn_points()
+    start_wp = all_spawn_points[int(round((start * (len(all_spawn_points)-1))/100))]
+    end_wp = all_spawn_points[int(round((end * (len(all_spawn_points)-1))/100))]
+    grp = GlobalRoutePlanner(tmap, 1.0)
+    route = grp.trace_route(start_wp.location, end_wp.location)
+    #print(route)
+    print("\033[1m> Generating weather\033[0m")
+    weather_values = list(np.around(np.array(x[0:10]),1)) 
     weather_values.insert(0, 100.0)
     weather_settings = []
     n = 0
@@ -30,134 +54,131 @@ def run_simulation(x):
         weather_settings.append((str(key), weather_value))  
         n = n + 1
 
-    route = []
-    scen_type_list = []
-    scenario_attributes_list = []
+    #print("\033[1m> Generating scenario\033[0m")
+    scen_type = None
+    scenario_attributes = None
     
+    print("\033[1m> Writing parameters to file\033[0m")
     #save xml
-    generate_xml(route, dict(weather_settings), scen_type_list, scenario_attributes_list)
+    generate_xml(town, route, dict(weather_settings), scen_type, scenario_attributes, sim_n, routes_filepath)
     
     #run sim
-    os.system("./leaderboard/scripts/run_evaluation.sh")
+    os.system("./leaderboard/scripts/run_evaluation.sh")            
     
     #read json average driving score
-    with open('leaderboard/results.json') as f:
+    with open(leaderboard_results_filepath) as f:
         data = json.load(f)
         
     driving_score = data["values"][0]
+    
+    print("\033[1m> Average driving score = {}\033[0m".format(driving_score))
     
     return driving_score
 
 
 
-def generate_xml(route, weather_settings, scen_type_list, scenario_attributes_list):
-        #positions = []
-        #positions = self.__get_list_of_positions(route)
-        root = ET.Element('routes')
-        route = ET.SubElement(root, 'route')
-       
-        route.set('id', '0')
-        route.set('town', 'Town05')
-        
-        weathers = ET.SubElement(route, 'weathers')
-        weather = ET.SubElement(weathers, 'weather')
-
-        for key, value in weather_settings.items():
-            weather.set(str(key), str(value))
-        
-        waypoints = ET.SubElement(route, 'waypoints')
-        
-        # start point
-        waypoint = ET.SubElement(waypoints, 'position')
-        waypoint.set('x', '189.7')
-        waypoint.set('y', '-11.0')
-        waypoint.set('z', '1.0')
-        # end point
-        waypoint = ET.SubElement(waypoints, 'position')
-        waypoint.set('x', '155.0')
-        waypoint.set('y', '169.1')
-        waypoint.set('z', '0.0')
-
-        scenarios = ET.SubElement(route, 'scenarios')        
-                
-        ########################### scenario definition
-        
-        for n in range(0, len(scen_type_list)):
-        
-            scen_type = scen_type_list[n]
-            scenario_attributes = scenario_attributes_list[n]
-            
-            new_scenario = ET.SubElement(scenarios, "scenario")
-            new_scenario.set("name", scen_type + "_" + str(n))
-            new_scenario.set("type", scen_type)
-            
-            for a_name, a_type, a_value in scenario_attributes:
-                data = ET.SubElement(new_scenario, a_name)
-                if a_type == 'transform':
-                    data.set("x", a_value[0])
-                    data.set("y", a_value[1])
-                    data.set("z", a_value[2])
-                    data.set("yaw", a_value[3])
-                elif 'location' in a_type:
-                    data.set("x", a_value[0])
-                    data.set("y", a_value[1])
-                    data.set("z", a_value[2])
-                    if 'probability' in a_type:
-                        data.set("p", a_value[3])
-                elif a_type in ('value', 'choice', 'bool'):
-                    data.set("value", a_value)
-                elif a_type == 'interval':
-                    data.set("from", a_value[0])
-                    data.set("to", a_value[1])           
-            
-        ##################################
-        
-        
-        
-        tree = ET.ElementTree(root)
-        # Write XML file
-        tree.write('leaderboard/data/custom_route.xml')
-        
-        
-        
-
 class MyProblem(ElementwiseProblem):
-    def __init__(self, n_var, n_obj, xl, xu):
+    
+    def __init__(self, n_var, n_obj, n_ieq_constr, n_eq_constr, xl, xu):
         self.n_var = n_var
         self.n_obj = n_obj
+        self.n_ieq_constr = n_ieq_constr
+        self.n_eq_constr = n_eq_constr
         self.xl = xl
         self.xu = xu
-        super().__init__(n_var=self.n_var, n_obj=self.n_obj, xl=self.xl, xu=self.xu)
+        super().__init__(n_var=self.n_var, n_obj=self.n_obj, n_ieq_constr=self.n_ieq_constr, n_eq_constr=self.n_eq_constr, xl=self.xl, xu=self.xu)
         
     def _evaluate(self, x, out, *args, **kwargs):
+        global sim_n
         
-        #print(x)
+        print("\n")
+        print("\n\033[1m========= Generating Scene_eval_n_{} =========\033[0m".format(sim_n))
         out["F"] = run_simulation(x)
+        out["G"] = x[9]-x[10]-5
+        #out["H"] = x[10]-x[11]
         
-
+        # save data to csv file
+        save_route_data(sim_n)
+        
+        # restart carla every 'restart_interval' evaluations
+        if sim_n%restart_interval == 0:
+            global carla_pid
+            print("\033[1m> Restarting Carla Server\033[0m")
+            for pid in carla_pid:
+                os.system("kill -9 " + pid)
+            os.system("./launch_carla.sh")
+            carla_pid = []
+            for proc in psutil.process_iter():
+                if process_name in proc.name():
+                    carla_pid.append(str(proc.pid))
+                    
+        sim_n = sim_n + 1
 
 def run_ga():
     
-    n_var = 9
+    n_var = 11
+    
+    # -> cloudiness [0,100]
+    # -> fog_density [0,100]
+    # -> fog_distance [0,100]
+    # -> precipitation [0,100] 
+    # -> precipitation_deposits [0,100] 
+    # -> sun_altitude_angle [-90,90] 
+    # -> sun_azimuth_angle [0,360] 
+    # -> wetness [0,100] 
+    # -> wind_intensity [0,100]
+
+    # -> Town [1, 2, 3, 4, 5, 6, 7, 10, 12]
+
+    # -> initial_waypoint [depends on town] -> map (0,100) to (0, len(all_spawn_points))
+    # -> final_waypoint   [depends on town]
+    
+    # -> scenario NOT FIXED YET
+    
     n_obj = 1
-    xl = np.array([0,0,0,0,0,-90,0,0,0])
-    xu = np.array([100,100,100,100,100,90,360,100,100])
+    xl = np.array([0,0,0,0,0,-90,0,0,0,0,0])
+    xu = np.array([100,50,50,100,100,90,360,100,100,100,100])
     
     # termination criteria:
     #     n_eval 
     #     n_gen
     #     time
 
-
-    algorithm = GA(pop_size=10)
-    problem = MyProblem(n_var, n_obj, xl, xu)
-    #termination = get_termination("time", "00:00:30")
-
-    result = minimize(problem, algorithm, seed = 2, verbose=True)
+    # operators not used yet
+    sampling = FloatRandomSampling()
+    selection = RandomSelection()
+    crossover = SBX()
+    mutation = PolynomialMutation(prob=1.0, eta=10)
+    
+    algorithm = GA(pop_size,
+                   eliminate_dupliucates = True)
+    
+    problem = MyProblem(n_var, n_obj, 1, 0, xl, xu)
+    termination = get_termination("time", max_time)
+    
+    res = minimize(problem,
+                   algorithm,
+                   termination,
+                   seed = 1,
+                   verbose=True,
+                   save_history=True)
+    
+    
+    print("Best solution found: \nX = %s\nF = %s" % (res.X, res.F))
 
 
 
 
 if __name__ == '__main__':
+    global town
     
+    #town = input('Town to test: ')
+    
+    town = 'Town05'
+    
+    # get carla pid
+    for proc in psutil.process_iter():
+        if process_name in proc.name():
+            carla_pid.append(str(proc.pid))
+       
     run_ga()

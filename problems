@@ -29,24 +29,202 @@ implement person crossing scenario!!! ->>>>>>>>>>>>>>> done
 working on perfecting the crossing scenario 
 let's try to select a trigger point close to a junction - this is not really working, might need to hard code all possible trigger point for all scenarios
 
-prettify xml done
+prettify xml not done
 xml works with all scenarios and attributes
 i can use all scenarios
 just need to test each individual one
 
 
-route creator is having some problems
+need to make sure that scenarios are not happening too closed together
+let's try to limit the scenarios to one per scene
 
 
---------- future----------
-
-how many parameters do we have in total?
-how can we set the objective functions?
+try to implement genetic algorithm with the objective to get the average driving score below 60 % or something (single objective)
 
 
------------ not working -------------
 
 
-i have deleted the traffic_manager parts in the leaderboard_evaluator.py file but the background traffic is still there(?)  -- this is not happening
+
+route creator is having some problems --- solved
+
+
+WORKING SCENARIOS: [
+- PedestrianCrosing - near junctions
+- HardBreakRoute - anywhere
+- PriorityAtJunction - at traffic light junctions (turns the light green for the ego vehicle)
+]
+
+
+----------------------------------------------------------------------------------
+----------------------------------------------------------------------------------
+----------------------------------------------------------------------------------
+
+HOW MANY PARAMETERS DO WE HAVE IN TOTAL?
+
+-> cloudiness [0,100]
+-> fog_density [0,100]
+-> fog_distance [0,100]
+-> precipitation [0,100] 
+-> precipitation_deposits [0,100] 
+-> sun_altitude_angle [-90,90] 
+-> sun_azimuth_angle [0,360] 
+-> wetness [0,100] 
+-> wind_intensity [0,100]
+
+-> Town [1, 2, 3, 4, 5, 6, 7, 10, 12]
+
+-> initial_waypoint [depends on town]
+-> final_waypoint   [depends on town]
+
+-> Scenario Type [PedestrianCrossing, HardBreakRoute, ControlLoss, Constr]
+
+-> Attributes [depends on scenario type] {we can also choose this randomnly, for example we cannot spawn pedestrians anywhere so a method would check where we can spawn given the route}
+
+how can we set the objective functions? == average driving score for single objective
+
+Genetic Algorithm working with all weather settings + route selection
+
+continue to next phase (scenario)
+find a better way to define scenarios
+
+create an independent util to write xml! done
+
+
+
+
+------------------------------------------
+implemented:
+- random tester with a few scenarios
+- ga tester without any scenarios
+
+
+what next?
+
+- solving the problem with carla malloc bug and restarting the ga_tester! SOLVEDDDDD
+- create a script that implements one scenario per route given a route with all automatic parameters !!! IMPORTANT
+- choose scenarios to be used           - TO DO
+- save all runs data in excel format !!!!! DONEEEEEEE
+- start from saved position - NOT NEEDED
+- implement termination criteria 	- TO DO
+- display graph 			- TO DO
+- integrate with a few ADS 		- TO DO
+
+
+
+extensions!!
+
+- save carla map object as pickle -> no need to call the simulator  --- NOT POSSIBLE (RuntimeError: Pickling of "carla.libcarla.Map" instances is not enabled)
+- check out and test the BackGroundParametizer special scenario!!!! not straightforward, give another try
+
+
+########################################################################
+########################################################################
+
+
+- Random tester
+	- select weather, town, route, one scenario randomly
+	- test with any ADS
+	- doesn't check for duplicate scene
+	- saves everything to file
+	- doesn't have a termination criteria
+	- it will just keep creating new scenario without an objective
+	
+- GA tester
+	- GA implemented
+	- works without bugs
+	- saves all runs to file
+	- creates weather, town, route, one scenario according to the algorithm
+	- convergence is too fast
+	- single objective = minimize the average driving score from carla
+	- can create graph of convergence
+	- 
+	- we could implement different algorithms
+	
+
+- General
+	- we can reuse the xml route files to train the ADS (not done yet)
+	- we can test with a rule based controller made by carla
+	- we can test with Interfuser
+	
+	
+	
+	
+	
+	
+	
+************************************************************************************
+
+- fix to one town
+- find most challenging road, intersection
+
+different algorithms to test
+compare random vs all of them
+
+
+run for each town with different ads
+
+3 ads
+3 algorithms to test
+
+add termination criterias
+
+failure history store
+
+-> test lbc with one town no scenario
+
+
+algorithm to monitor the progress (online incremental learning)
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

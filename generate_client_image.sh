@@ -1,3 +1,3 @@
 #!/bin/bash
 
-docker build -t ctester:v2 .
+docker build -t evodrive:v1 .
