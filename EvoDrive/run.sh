@@ -28,10 +28,10 @@ export DEBUG_CHALLENGE=1
 
 #export TEAM_AGENT=${LEADERBOARD_ROOT}/leaderboard/autoagents/npc_agent_modified.py
 #export TEAM_AGENT=${LEADERBOARD_ROOT}/leaderboard/autoagents/human_agent.py
-export TEAM_AGENT=${LEADERBOARD_ROOT}/leaderboard/autoagents/npc_agent.py
+#export TEAM_AGENT=${LEADERBOARD_ROOT}/leaderboard/autoagents/npc_agent.py
 
-#export TEAM_AGENT=${LEADERBOARD_ROOT}/team_code/interfuser_agent.py
-#export TEAM_CONFIG=${LEADERBOARD_ROOT}/team_code/interfuser_config.py
+export TEAM_AGENT=${LEADERBOARD_ROOT}/team_code/interfuser_agent.py
+export TEAM_CONFIG=${LEADERBOARD_ROOT}/team_code/interfuser_config.py
 
 # export TEAM_AGENT=${LEADERBOARD_ROOT}/team_code/tcp_agent.py
 # export TEAM_CONFIG=${LEADERBOARD_ROOT}/team_code/tcp.ckpt
@@ -51,6 +51,6 @@ echo "Carla PID=$PID"
 
 sleep 10
 
-#./leaderboard/scripts/run_evaluation.sh
-python3.7 ./ga_tester.py
+./leaderboard/scripts/run_evaluation.sh
+#python3.7 ./ga_tester.py
 #python3.7 ./demo.py

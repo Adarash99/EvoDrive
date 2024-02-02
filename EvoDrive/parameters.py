@@ -12,7 +12,7 @@ carla_pid = []
 restart_interval = 5
 pop_size = 15
 #n_max_gen = 30 #not used
-max_time = "20:00:00"
+max_time = "19:00:00"
 sim_n = 1
 
 ####################################

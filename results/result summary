@@ -1,0 +1,9 @@
+test 1
+	npc agent
+	ga testing with default parameters
+	no traffic
+	town 05
+	pop size 15
+	evalutations 1335
+	generations 89
+	malloc error termination

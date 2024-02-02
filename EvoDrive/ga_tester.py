@@ -6,6 +6,7 @@ from pymoo.operators.crossover.sbx import SBX
 from pymoo.operators.mutation.pm import PolynomialMutation
 from pymoo.operators.mutation.bitflip import BitflipMutation
 
+from pymoo.visualization.scatter import Scatter
 from pymoo.core.problem import ElementwiseProblem
 from pymoo.optimize import minimize
 from pymoo.termination import get_termination
@@ -166,6 +167,8 @@ def run_ga():
     
     print("Best solution found: \nX = %s\nF = %s" % (res.X, res.F))
 
+    F = problem.pareto_front()
+    Scatter().add(F).show()
 
 
 
