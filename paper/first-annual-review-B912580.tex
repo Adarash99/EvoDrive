@@ -1,0 +1,446 @@
+\documentclass[a4paper]{article}
+\AtBeginDocument{\addtocontents{toc}{\protect\thispagestyle{fancy}}}
+\usepackage{array}
+\newcolumntype{H}{>{\setbox0=\hbox\bgroup}c<{\egroup}@{}}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage[font=small,labelfont=bf]{caption}
+\usepackage{graphicx}
+\graphicspath{{./../images/}}
+\usepackage{subfig}
+\usepackage{blindtext}
+\usepackage[hidelinks]{hyperref}
+\usepackage{apacite}
+\usepackage{float}
+\usepackage{longtable}
+\usepackage{booktabs}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+%\usepackage{natbib}
+
+\pagestyle{fancy}
+%\renewcommand{\headrulewidth}{0pt}
+\fancyhf{}
+\fancyhead[LO]{Annual Progress Review \-- Written Report}
+\fancyhead[RO]{Adarash Kumar (B912580)}
+\fancyfoot[LO]{\leftmark}
+\fancyfoot[RO]{Page \thepage\ of~\pageref{LastPage}}
+\renewcommand{\headrulewidth}{1pt}
+\renewcommand{\footrulewidth}{1pt}
+
+\title{
+  \begin{figure}[H]
+    \centering
+      \includegraphics[width=0.4\linewidth]{logo.jpg}
+  \end{figure}
+  \vspace{2cm}
+  Annual Progress Review \-- Written Report \\
+  \vspace{2.5cm}
+  \textbf{Improve Trustworthiness of Deep Learning in Computer Vision for Autonomous Systems} \\
+  \vspace{3.5cm}
+  Adarash Kumar (B912580) \\ 
+  {\large a.kumar4@lboro.ac.uk} \\
+  \vspace{3cm}
+  First Supervisor: Prof\@. Qinggang Meng \\
+  Second Supervisor: Prof\@. Baihua Li \\
+  \vspace{1cm}
+  }
+\author{}
+\date{Submitted: \today}
+
+
+\begin{document}
+
+\begin{titlepage}
+  \maketitle  
+  \thispagestyle{empty}
+\end{titlepage}
+
+\setcounter{page}{2}
+\vspace*{0.5cm}
+\begin{abstract}
+
+  This document outlines the progress achieved in the first year of my PhD course.
+  I start with an introduction to the research topic by giving some background, explaining its significance and comparing it to practices adopted by other similar industries. Subsequently, I divulge into current methods used by industry and academia and present the tools I will use for the project in the Literature Review section. Next, I present my first paper's thesis: Autonomous Driving System's Benchmark Framework. Then I present my idea for the second paper and lastly, I lay out possible future directions in which I might continue successive parts of my final PhD.
+
+\end{abstract}
+\vspace*{1cm}
+\tableofcontents
+\pagebreak
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Introduction}
+  \subsection{Background}
+  Exciting new self-driving technology is expected to improve road safety and efficiency, benefit people with mobility issues, and provide more reliable public transport services, only if the technology is deployed safely. In 2017, Waymo launched a fleet of full sefl-driving taxis in California~\cite{gibbs2017}. More recently, Tesla released a beta of the Tesla Autopilot; their fully autonomous-vehichle software~\cite{hasler2022}.
+  However, given the accidents caused by self-driving cars~\cite{petrovic2020traffic}, there is a long way to ensure the robustness and reliability of Autonomous Driving Systems (ADSs). Similar to traditional software testing, companies such as Waymo and Tesla employ their own testing as quality assurance mechanisms. This usually include training the ADSs in a simulated environment as well as in the real world. There is a need for a benchmarking solution for ADSs; a universal testing framework that takes into account accuracy as well as robustness through which various ADSs could also be compared to each other.
+  \subsection{Significance}
+  The underlying technology of ADSs are Deep Learning models such as Deep Neural Networks (DNNs), and especially their application in Computer Vision. Even though DNNs have reached many milestones over the last decade~\cite{goodfellow2014generative,meed2020}, the technology is still not robust enough for deployment in a safety and security critical application such as self-driving cars. This is largely the reason why we haven't yet seen any fully autonomous vehicles on the market. Most goverments around the world have only allowed self-driving cars on public roads to be driven for testing purposes. Despite this, a lot of effort is going into making DNNs more trustworthy. The UK goverment has already allocated £34 million on the improvement of this technolgy and they promised to allocate a total of £100 million. Recent updates to the Highway Code have also been put in place to accomodate this new technology. In April 2022, the DfT set out changes to the Highway Code following a public consultation and a review by Britain's law commissioners. Under the proposals, human drivers won't be held responsible if an autonomous vehicle is involved in a crash. Instead, insurance providers will be liable for claims in such circumstances~\cite{uk_gov_2020}.
+  This legislation puts a lot of strain on insurance companies in being able to evaluate a car's AI system in order to correctly determine insurance premiums.
+  Most of the research on DNNs until now was focused on setting accuracy records but not a lot of importance was placed on the trustworthiness of DNNs until very recently.
+  \subsection{Related industries}~\label{sec:related-industries}
+  Trustworthiness in other similar industries such as avionics and autonomotive is addressed predominantly by two processes: a certification process and an explanation process~\cite{huang2020survey}. The certification is held before the deployement of the product to make sure that it functions correctly and safely. During the certification process, the manufacturer needs to demonstrate to the relevant certification authority, e.g: the Europeans Aviation safety Agency or the Vehichle Certification Agency, that the produt behaves correctly with respect to a series of high-level requirements. The explanation process is held whenever needed during the lifetime of the product. A user manual should explain the set of expected behaviours of the product that its user may frequently experience. More importantly, an investigation could be conducted, with a formal report produced, to understand any unexpected behaviours of the product. A similar practice should be carried out when working with data-driven deep learning systems such as Autonomous Vehicles. In short a user is able to trust a system if the system has been certified by a certification authority and any of its behaviour can be well explained. Both processes are challenging, owing to the black-box nature of DNNs.
+  \subsection{Problem statement}
+  While there are many aspects related to vehicle safety and risks, such as cyber threats to the autonmous system of a vehicle, mechanical failures, etc., for the first part of this project, I will focus on the perception module for Multi-Module Autonomous Driving Systems. More specifically under what inputs this technology fails to operate as expected. Inputs can include any combinations of camera, lidar, radar and gps data. 
+  Recent experiments on Tesla driverless vehicles show that some small stickers on the ground in an intersection can mislead the Tesla vehicle in the autosteer mode to drive into the reverse lane. On tests using the DAVE self-driving car architecture from NVIDIA, billboards on roadside with adversarial perturbation yield a mis-leading steering angle more than 26 degrees, which is larger than the safety threshold during the test. Even without specifically being attacked ADSs do not operate as expected, for example under various weather conditions or newly seen scenarios which were not part of the training process.
+  There is one main reason~\cite{huang2020survey} why we haven't been able to quantify the robustness of these technologies. Unlike conventional software, AI models present themselves as black-boxes, sort of like the human brain, we don't fully understand how it consumes and represents knowledge but it works. There have been a few attempts to formally or theoretically guarantee the correct operation of AI models. Here are the leading avenues of research: 
+  \begin{itemize}
+    \item \underline{Formal verification}. This is a way of formally defining a model and being able to set constrains on its output. This is feasible from a theoretical viepoint but the technique does not scale to state-of-the-art DNNs.
+    \item \underline{Testing}. This methods entails testing the model extensively, to prove that there are no `bugs'. This is a computationally very expensive task. There are some testing methods for DNNs but not exhaustive and there are none for testing ADSs.
+  \end{itemize}
+
+  For the first part of the project I created a benchmarking solution for the perception module inside ADSs based on the \emph{Testing} technique for DNNs. The testing environment will consist of a simulated environment in which an ego-vehicle will be controlled by an open-source ADS\@.
+
+\pagebreak
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Literature Review}
+
+\subsection{Trustworthy AI}
+The major problem in empirically determine trustworthiness in AI is the lack of Validation and Verification (V\&V) techniques. There are a lot of very similar requirements accepted for trustworthy AI by many researchers but generally they come down to the following criteria~\cite{kaur2022trustworthy}:
+\begin{itemize}
+    \item Human oversight: AI systems should complement humans without replacing them~\cite{daugherty2018human}.
+    \item Technical robustness and safety: AI systems should be technically robust and perform as expected by the users. They should be able to recover if something goes wrong and be resilient to attacks and results should be reproducible~\cite{ethicseuarticle}.
+    \item Privacy and data governance: AI systems should protect user data and govern its usage at every step of its lifecycle.
+    \item Transparency: AI systems' decision making should be clear, and reproduceable. This also extends to the stakeholders clearing understanding the system's capabilieties and shortcomings~\cite{dignum2017responsible}.
+    \item Fairness: AI systems should treat all sections of society fairly  whithout discriminating based on factors such as socio-economic determinants.
+    \item Societal and environmental well-being: AI systems should not cause any harm to society or the environment during design, development, and use~\cite{flores2016false}.
+    \item Accountability: AI systems should be able to justify their decisions~\cite{wieringa2020account}.
+\end{itemize}
+
+Many big companies nowdays have started using HR recruitment software based on AI models for their recruitment process. Self-driving cars with a high level of autonomy have incresed in popularity. AI-based facial recognition software is being used by law enforcement agencies around the world. These are a few examples where a non-trustworthy AI would be very problematic. In fact, over the years we have seen many news articles and research papers on how these technologies are not fit for safety and security critical applications.
+In recent years we have had many controversies surrounding untrustworthy AI\@. Researchers have found AI-based recruitment process and facial recognition technology to be deeply biased with regard to race, gender, age, and other factors~\cite{marks2021can}. Self-driving cars manufacturers have run in many disputes over accidents happened while the autopilot was enganged~\cite{kohli2020enabling}.\\
+Because of a lack of Verification and Validation techniques for technologies based on Deep Learning models it's not clear how thrustworthy this technologies really are. The reason why conventional testing methods cannot be used is that a Deep Learning model has a lot of possible states, each state having a different output. If we knew all the states and outputs in the first place we would not resort to a Deep Learning model at all. Furthermore testing all the possible state of even a small CNN model would be computationally very expensive. This forces researchers to come up with novel methods of testing the robustness of Deep Learning models.\\
+In addition to a lack of V\&V techniques, there are many various types of attacks~\cite{chakraborty2018}, which recent research have brought to light, that can be executed on many AI models: 
+\begin{itemize}
+    \item Evasion Attacks: These are the most common, the adversary tries to evade the system by adjusting malicious samples during testing phase. All adversarial attacks are a subset of evasion attacks.
+    \item Poison Attacks: This is known as contamination of the training data, it takes place during the training time of the target model.
+    \item Exploratory Attacks: This type of attacks do not influence the training dataset. Given black-box access to the model, they try and learn as much as possible about the learning algorithm.
+\end{itemize}
+
+AI models are not only susceptible to attacks but also to random noise. For example a self-driving car's vision system would not perform as well in foggy weather or heavy rain because of training biased (most training images are taken during sunny days). A computer vision system trained on pictures taken by a specific setup might have problems to detect the same object under a different setup (different lens, post image processing, etc.). So, when we talk about robust AI we mean how it will react to, both, when it's specifically targeted or, just affected by random events or scenarios.
+
+\subsubsection{Distributional Shift Robustness}
+Distributional shift robustness refers to the robustness of a DNN on data with perturbations or Out-of-Distribution (OoD) data~\cite{yang2021generalized}. DNN's training is based on the assumption that training, testing and operational data are identically distributed (similar). This assumption can hardly be satisfied; arising the need to investigate into the OoD generalization problem. This resulted in the generation of many OoD datasets such as ImageNet-C~\cite{hendrycks2019benchmarking}: an open source dataset consisting of algorithmically generated corruptions applied to the ImageNet test-set, created to test the distributional shift robustness of DNNs with artificialy generated OoD-data. The database contains over a million images each having one of 15 types of corruptions with varying level of intesities. These perturbations could occur in the real world because of light angles, hardware failures, weather conditions, and purposefully through adversarial attacks. Figure~\ref*{fig:imagenet-c} shows the different corruptions generated by the authors of ImageNet-C.
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.50\linewidth]{imagenet-c.jpg}
+  \caption{Imagenet-C corruptions~\protect\cite{hendrycks2019benchmarking}.}~\label{fig:imagenet-c}
+\end{figure}
+Another popular dataset is ImageNet-A~\cite{hendrycks2021natural}: a dataset consisting of real-world, unmodified, and naturally occurring examples that are misclassified by ResNet models~\cite{targ2016resnet}. This is an example of a dataset created to test the distributional shift robustness of DNNs with naurally  OoD-data.\\
+A special case of OoD-data are adversarial examples as they are purposefully generated to yield an erroneous output.
+\subsubsection{Adversarial Attacks}
+In the domain of Deep Learning, Adversarial Attacks generate adversarial examples by adding perturbations (not visible to the human eye) to the original data. This causes the DL model to misclassify the inputs. Because of the nature of adversarial examples, it's hard for the model to identify when it's being attacked as the adversarial examples would be interpreted as genuine data by the model. Figure~\ref{fig:adv-example} shows an example of an Adversarial attack.
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.50\linewidth]{adv-attack-example.png}
+  \caption{Adversarial attack example~\protect\cite{goodfellow2014}.}~\label{fig:adv-example}
+\end{figure}
+
+\noindent
+Adversarial attacks can have many different goals (in increasing level of complexity)~\cite{chakraborty2018}:
+\begin{itemize}
+    \item Confidence reduction: The adversary tries to reduce the confidence of prediction for the target model. This is the easiest type of attack and in most cases can be realized by just adding some random noise to an image.
+    \item Misclassification: The adversary tries to alter the output classification of an input example to any class different than the ground thruth.
+    \item Targeted misclassification: The adversary tries to change the output to a predetermined class regardless of the input. For example we could force the target model to classify all images as cat images.
+    \item Source/target misclassification: The adversary tries to change the output to a predetermined class depending on the input. For example we could force the target model to classify all cat images as dogs and all horse images as pandas.
+\end{itemize}
+
+The goals mentioned above are realized under different threat models. Threat models are different scenarios divided by how much knowledge the adversary has of the target model. They can be divided as follows~\cite{ren2020adversarial}:
+\begin{itemize}
+    \item White-box model: under this model the adversary has full knowledge of the model under attack. This includes its training and testing data, structure, parameters, inputs and outputs and intermediate values. This would make it easy for adversary to compute tailored perturbations to gain highest level of confidence in the attack and be able to execute all type of attacks with relative easy including source/target misclassification.
+    \item Gray-box model: This model supposes that the adversary has some knowledge of the model.
+    \item Black-box model: Under this model the adversary only has knowledge of the inputs and outputs of the model under attack. This means the model under attack is considered as a black-box by the adversary.
+\end{itemize}
+Depending on which threat model the attack is being a
+executed the difficulty of the goals of the attack can change. For example under white-box model, it would be really easy to modify the confindence level of the attacked model. Figure~\ref{fig:evasion-attack} shows how the complexity changes with respect to the goals and threat model of the adversary.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.5\linewidth]{evasion-attacks.png}
+  \caption{Attack Difficulty with respect to adversarial
+  capabilities and goals for Evasion Attacks~\protect\cite{chakraborty2018}.}~\label{fig:evasion-attack}
+\end{figure}
+
+Recent research has brought to light that under black-box settings, Deep Learning models are still at attack-risk, owing to the transferability property of Neural Networks~\cite{papernot2016,liu2016,tramer2020adaptive}. Given this property it is possible to find an adversarial example for an unknown DNN, by calculating one for a known DNN\@. This also allowed for universal adversarial perturbations~\cite{Moosavi2015}: input-agnostic perturbations that added to benign data will yield erroneous output with a high level of confidence on any DNN\@ while remaining imperceptible to humans.
+
+\subsubsection{Adversarial Defenses}
+Substantial effort has been made in order to defend against adversarial attacks~\cite{metzen2017, feinman2017}. Mainly there are two separate approaches in this area. First one is generating heuristic defenses. These are usually best guesses and do not mathematically guarantee the robustness of a given model. The second approach is proven defenses. These guarantee mathematically a reduction in loss against a class of adversarial attacks. The problem with proven defenses is that they are weak and we haven't found one that fully guarantees to eliminate the threat of adversarial attacks. Heuristic defenses are the best we have at the moment and Adversarial PGD training is considered state-of-the-art. A lot of the proposed defences have been disproved by new adapative attacks~\cite{carlini2017}.
+
+\subsection{Autonomous Driving Systems}
+\subsubsection{Types of ADSs}
+ADSs are either designed to be standalone, ego-only systems~\cite{levinson2011towards,urmson2008autonomous}, or connected multi-agent systems~\cite{gerla2014internet,amadeo2016information}. Furthermore, these designs are realized with two alternative approaches: modular~\cite{levinson2011towards,urmson2008autonomous,wei2013towards,akai2017autonomous,guizzo2011google,kato2018autoware,zhu2018baidu} or end-to-end~\cite{bojarski2016end,chen2015deepdriving,pomerleau1988alvinn,muller2005off,xu2017end,sallab2017deep,kendall2019learning} driving systems. Figure~\ref{fig:modularvsend2end} shows the difference between the modular and end-to-end systems.
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.7\linewidth]{modularvsend2end.png}
+  \caption{Multi modal vs End-to-end architecture~\protect\cite{tampuu2020survey}.}~\label{fig:modularvsend2end}
+\end{figure}
+
+Modular pipelines divide the driving task into many sub-tasks such as perception, planning, and control. A major challenge with this architecture is the communication between the different modules as highlighted by works such as~\cite{yang2017towards,krejsa2010high}. This led to the creation of ROS~\cite{garage2009robot} which mitigates these problems. An upside to modularity is that engineering teams can work on one module at a time, and improve its performance without compromising the rest of the system. Another benefit of multi modal ADSs lies in their debugging ease as each error can be narrowed down to one module, e.g\@. a perception error. 
+End-to-end driving paradigm focuses on creating a deep learning model that takes as inputs the raw data from all the sensors in the AV and outputs control signals to maneuver it. The output are usually values like the throttle, brake, and steering angle. The advantage of such a system over modular systems is that it does not require nearly as annotated data as modular.
+Multi-module ADSs are preferred over End-to-End models because they have less black-box parts. Waymo and Tesla both use ego-only, modular approaches to development.
+
+\subsubsection{ADSs' Attacks}
+Most of the early developed attacks would only target a model digitally by directly changing the inputs. In the domain of Computer Vision we have, later, also seen many examples of real-world physical attacks such as~\cite{kurakin2016, athalye2017, evtimov2017}. Many of the real-world adversarial attacks are what self driving cars are the most vulnerable to. Table~\ref{tab:adv-attacks} presents a list of physical adversarial attacks sub-divided by the task they are trying to attack.
+
+\begin{longtable}{p{0.25\linewidth} p{0.7\linewidth}}
+  \midrule \raggedright\textbf{Sub-tasks} & \textbf{Papers} \\
+  \midrule \raggedright{Traffic sign recognition} & {\cite{lu2017adversarial} \newline~\cite{evtimov2017robust} \newline~\cite{song2018physical} \newline~\cite{sitawarin2018rogue} \newline~\cite{benz2020double} \newline~\cite{duan2020adversarial} \newline~\cite{bai2021inconspicuous} \newline~\cite{lovisotto2021slap} \newline~\cite{zhong2022shadows}}\\
+  \midrule Traffic light recognition & {\cite{zolfi2021translucent} \newline~\cite{patel2020bait}} \\
+  \midrule \raggedright{Vehicle detection} & {\cite{zhang2019camou} \newline~\cite{wu2020physical} \newline~\cite{huang2020universal} \newline~\cite{wang2021dual} \newline~\cite{suryanto2022dta}} \\
+  \midrule \raggedright{Road line detection} & {\cite{boloor2020attacking} \newline~\cite{sato2021dirty}} \\
+  \midrule \raggedright{Monocular depth estimation} & {\cite{yamanaka2020adversarial} \newline~\cite{cheng2022physical}} \\
+  \midrule \raggedright{LiDAR perception} & {\cite{sun2020towards} \newline~\cite{tu2020physically} \newline~\cite{abdelfattah2021towards}} \\
+  \midrule
+  \caption{Papers on physical adversarial attacks on self-driving cars' tasks.}~\label{tab:adv-attacks}
+\end{longtable}
+
+\subsubsection{ADS Testing}~\label{sec:ads-testing}
+ADS testing is classfied into four level~\cite{abrecht2021testing}: directly test deep learning models (L1); hardware sensors to the scope of co-testing (L2); continue to consider external environmental factors on the basis of L2 (L3); and test ADS in a closed-loop environment (L4). None of the physical attack presented in table~\ref{tab:adv-attacks} achieve L4 testing capabilities, most achieve L1. There is a need to test these types of attacks on ADSs to see their effectiveness and subsequently develop apt defese techniques. 
+Beside this limitation,in recent years, the literature has proposed many testing techniques to improve the general safety and realiability of ADSs~\cite{abdessalem2018testing,zhang2018deeproad,tian2018deeptest,huynh2019ac3r,abdessalem2018testing1,calo2020generating,chandrasekaran2021combinatorial,du2021towards,gambi2019automatically,ishikawa2020testing}. For example, DeepRoad~\cite{zhang2018deeproad} and DeepTest~\cite{tian2018deeptest} leverage metamorphic testing to test ADSs under extreme weather conditions. The authors of AC3R~\cite{huynh2019ac3r} have managed to generate driving scenarios in a simulated environments recreating collisions based on crash reports. In short, most testing methods can be divide into the following categories: metamorphic testing, scenario based testing, adversarial training, and formal verification. Even though current literature fails to provide a fully comprehensive benchmark testing solution, ADS testing and practices have certainly evolved. Here are the most common practices in the field~\cite{lou2022testing}:
+\begin{itemize}
+  \item Industry is shifting towards multi-module ADSs rather than end-to-end driving models.
+  \item Additional custom-made metrics are a widely used while testing, e.g\@. consistency metric.
+  \item Various driving scenarios based on real-world crash reports are created for testing.
+  \item On-road testing is considered critical to ensure robustness and avoid overfitting to a simulated environment.
+  \item Simulation testing is still widely adopted especially to test dangerous scenarios safely.
+\end{itemize}
+\noindent
+The majority of the testing time on multi-module ADSs is spent on testing the perception module as it's backed up by Deep Learning models, generally DNNs. This is also the module most susceptible to OoD data and adversarial attacks. The majority of the other modules are made up of logic or sequences of commands and can be easily tested using existing convetional software testing techniques.
+
+\vspace{.5cm}
+\noindent
+Many papers have proposed numerous possible future research directions highlighting current gaps in knowledge and shortcomings of current ADS-testing methods. Here is a brief summary of the present-day limitations~\cite{lou2022testing}:
+\begin{enumerate}
+  \item Identifying possible corner cases and unexpected driving scenarios: autonomous vehicles must navigate through a wide range of environments and driving conditions. Identifying possible corner cases involves considering scenarios that may occur infrequently or under unusual circumstances, such as extreme weather conditions, unconventional road layouts, or rare traffic situations. Testing for edge cases involves sudden lane closures, unanticipated construction zones, uncommon vehicle behaviors, appearance of obstacles, unpredictable pedestrian behavior, or the malfunction of traffic signals. Testing for these scenarios helps ensure that the system can handle real-world uncertainties. Another example would be to understand how the ADS performs in scenarios where sensors may face challenges. this includes scenarios with poor visibility, sensor occlusions, or adverse lighting conditions, as these situations can impact the system's perception capabilities. Testing should also consider scenarios where the autonomous vehicle interacts with human-driven vehicles, pedestrians, and cyclists. This involves evaluating the system's ability to predict and respond to human behavior, including non-verbal communication cues.
+  \item Speeding up ADS testing: utilizing simulation environments us a key to speed up testing. Parallel testing and autonmated testing also reduce the time required for testing significantly. This involves running streamlined autonomated testing frameworks leveraging compunting resources effectively increasing the overall testing throghput. Risk based testing reduces testing time by prioritizing testing efforts based on the potential impact and likelihood of failure in different scenarios. This approach also ensures that critical functionalaties and challenging scenarios are throughly tested.
+  \item Tool support for constructing complex driving scenarios: This refers to software systems that allow testers to quickly and easily generate consistant scenarios through which ADSs can be tested. Current state-of-the-art simulators are quite cumbersome when it comes to novel scenario generation and it requires an in-depth knowledge of coding to be able to generate even the simplest of scenarios. An optimal tool would allow testers to verify the consistency of results and behaviors across different tests, generate a diversity of scenarios, quickly change crucial parameters such as traffic, weather and pedestrians levels, to repeat certain tests.
+  \item Tool support for data labelling: this involves being able to create tools to quickly and efficiently label data to train machine learning models for the perception task in autonomous driving, such as object detection, lane keeping, and traffic sign recognition. Labelled data is used to teach the model to recognize and understand different elements in the environoment.
+\end{enumerate}
+  
+\pagebreak
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Autonomous Driving Systems' Benchmark Framework} \label{sec:benchmark}
+\subsection{Introduction}
+This part of thesis sets out to generate a benchmark solution for Autonomous Driving Systems not only based on accuracy but also on robustness and other relevant metrics. This will enable researchers, companies, and goverment authorities to compare various ADSs or set particular standards that all AVs companies must conform to. The first part to this is to basic testing framework to which successive attacks and tests can be implemented. This section will form the basic of my first publication.
+
+\vspace{.1cm}
+
+\noindent To better understand and address the safety limits and threats, this project will investigate the robustness and truthfulness of outputs of the perception module in multi-module ADSs, such as road sign recognition, car tracking, person tracking, lane detection, and others, under varying intesities of different environment conditions, perturbations, and attack methods.
+In terms of objective, this project will attempt to accomplish the following:
+\begin{itemize}
+  \item Set a simulation environment where all tests will be conducted: This refers to configuring the CARLA simulator with the desired settings and parameters to create a consistent and controlled environment for conducting tests. This includes defining the road network, traffic scenarios, weather conditions, and other relevant simulation parameters.
+  \item Determine which perception module's tasks to test: Perception modules in autonomous driving systems are responsible for understanding the surrounding environment through sensors such as cameras, lidars, and radars. Testing the perception module involves evaluating its performance in various tasks, such as object detection, lane detection, traffic sign recognition, and pedestrian tracking. It is important to define which specific tasks will be tested to assess the perception module's capabilities and limitations.
+  \item Determine which perturbations to test for all tasks: Perturbations refer to the introduction of disturbances or variations in the simulation environment to evaluate the robustness of the perception module. This could include factors such as changes in lighting conditions, adverse weather conditions, occlusions, sensor noise, or other challenging scenarios that may impact the perception module's performance. By systematically introducing perturbations, the performance and reliability of the perception module can be assessed under different conditions.
+  \item Test an open-source ADS on the simulator: An open-source ADS refers to a self-driving software stack that is freely available for use and modification. Testing an open-source ADS on the simulator involves integrating the ADS into the simulation environment and evaluating its performance in terms of perception, planning, and control. This will allow me to analyze the behavior of the ADS and identify any areas that need improvement or refinement.
+  \item Determine when the ADS fails: During testing, it is crucial to identify scenarios or conditions in which the ADS fails to perform as intended. This could be due to limitations in the perception module, errors in the planning and decision-making algorithms, or other factors. By understanding the failure modes of the ADS, developers can focus on improving those specific areas and enhancing the overall reliability and safety of the system.
+  \item Empirically assess the robustness of an ADS\@: Robustness assessment involves quantitatively evaluating the performance and reliability of the ADS under various conditions and perturbations. This can be done by conducting extensive testing in the simulation environment, systematically varying the parameters, and measuring the system's performance metrics. The goal is to assess how well the ADS performs across different scenarios, identify vulnerabilities, and improve its ability to handle challenging situations.
+\end{itemize}
+
+\subsection{Related Work}
+Not many attempts have been made in literature to generate a single testing benchmark including most of the tasks of an ADS. The most notable comparison benchmark for ADSs at the moment is developed by CARLA, and it's called the CARLA Leaderabord Challenge. This is an annual competition where different developers create novel ADSs that compete against each other on the Leaderboard framework. This is a testing framework developed by leveraging the open source simulator CARLA and the package Scenarion Runner. The framework allows to create routes for the ADSs to follow in which they encounter various different scenarios such as pedestrian crossings, roadworks obstructing the carriageway, vehicles crossing red lights, etc. However, this testing framework does not challenge the adversarial attack aspect or weather related anomalies that occur with an ADS. Scene construction happens through a YAML file and is very unpractical and lengthy. 
+ANTICARLA~\cite{ramakrishna2022anti} levelarages the first version of CARLA Leaderboard to include weather manipulation while creating short tracks to test ADSs with different scenarios. This paper also includes various samplers to select the parameters of the weather such as precipitation, fog levels, and time of day. ANTICARLA was tested on 2 ADSs: Interfuser, LBC~\cite{kendall2019learning}. This platform tries to test various ADSs against adversarial weather conditions. Figure~\ref{fig:anticarla-pipeline} shows the pipeline of this framework and figure~\ref{fig:anticarla} shows the testing setup. Another testing framework in literature \cite{wang2022adept} is divided into two section: generation of test scenarios from accident reports and closed-loop testing based on adversarial attack. The first part builds up on previous work~\cite{huynh2019ac3r} by implementing it into CARLA, the second part uses adversarial examples such as billboards to fool the target ADS.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.7\linewidth]{anticarla-pipeline.png}
+  \caption{ANTICARLA's pipeline~\protect\cite{ramakrishna2022anti}.}~\label{fig:anticarla-pipeline}
+\end{figure}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.7\linewidth]{anticarla.png}
+  \caption{ANTICARLA's setup.~\protect\cite{ramakrishna2022anti}.}~\label{fig:anticarla}
+\end{figure}
+
+\subsection{Implementation}
+The problem I am trying to solve with the benchmark is as follows: \\
+given an simulator, an ADS and some parameters defining the environment, find a set of parameters that generate a scene that results in high infraction scores.\\
+To address this problem we need a simulated environment that connects to the ADS we want to test, has parameters defining a scene that can be changed, and has a module to record infractions. Then we need a way to choose the parameters from one scene to another. In this next section I will introduce my current framework implementation and ideas to improve it.
+\subsubsection{Setup}
+The testing benchmark was initially developed on machine with an i7 11th generation, an RTX 3090 GPU with 64GB of random access memory running Ubuntu 22.04. The main problem encoutered during setup was that, the chosen simulator, CARLA 0.9.14 cannot be installed from source on Ubunut 22.04. This prompted the need to create a portable solution that can work on different operating systems. In the final version of the benchmark framework, the simulator and the connected ADSs run inside a Docker container for ease of use accross various operating systems. Bash scripting is used to configure each ADS, start, and set the parameters for the simulation. The system is based on the Leaderboard 2.0 testing framework. CARLA provides a realistic simulation environment with various sensor models, including cameras, lidars, and radars. The ADS receives the data from these sensors, which represents the perception of the surrounding environment.
+Based on the sensor data it receives, the ADS processes the information, performs perception, planning, and decision-making tasks, and generates control commands. These control commands specify how the simulated vehicle should operate, such as steering, acceleration, and braking. The ADS sends these control commands back to the CARLA simulator. CARLA offers a variety of vehicle models that can be used in the simulation. Users can select a specific vehicle from the available options. Additionally, CARLA provides flexibility in generating custom vehicles by using 3D modeling software or modifying existing vehicle blueprints. This means that users have the ability to create and customize vehicles to suit their specific requirements and research needs within the CARLA simulation environment. 
+\subsection{Experiments}
+In this section I will present the experiments and results conducted on the system, and my plans for future experiments.
+\subsubsection{Initial experimentation}
+After setting up the testing environment, I integrated various end-to-end ADSs from https://leaderboard.carla.org/leaderboard/. These include ADSs that have competed in the Leaderboard Challenge on the previous version of CARLA, 0.9.10.1. The first step involved creating custom bash scripts for each ADS to set them up in the environment and work with the newer version of CARLA. Subsequently, I ran tests on the working ADSs using the basic leaderboard framework. I was able to use a gaussian sampler to select the parameter for each run. Figure~\ref{fig:carla} shows a sample of the various weather conditions available in Carla.
+ 
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\linewidth]{carla.jpg}
+  \caption{Carla's weather condition's sample.}~\label{fig:carla}
+\end{figure}
+
+\subsubsection{Artificial scenarios}
+The second phase of testing revolved around custom scenario. I tested the ADS's ability to respond to a variety of different scenarios. Figure~\ref{fig:scenarios} depicts two possible scenarios, on the left we have obstacle avoidance with slow moving hazard at lane edge and on the right we have braking with pedestrian emerging from behind a parked vehicle.
+Here is a list of the tested scenarios:
+
+\begin{enumerate}
+  \item Control loss \begin{itemize}
+    \item Control loss without previous action: The ego-vehicle loses control due to bad conditions on the road and it must recover, coming back to its original lane. 
+  \end{itemize}
+  \item   Traffic negotiation \begin{itemize}
+    \item Unprotected left turn at intersection with oncoming traffic.
+    \item Right turn at an intersection with crossing traffic.
+    \item Crossing negotiation at an unsignalized intersection.
+    \item Crossing traffic running a red light at an intersection.
+    \item Crossing with oncoming bicycles.
+  \end{itemize}
+  \item Highway \begin{itemize}
+    \item Highway merge from on-ramp.
+    \item Highway cut-in from on-ramp.
+    \item Static cut-in.
+    \item Highway exit.
+    \item Yield to emergency vehicle.
+  \end{itemize}
+  \item Obstacle avoidance \begin{itemize}
+    \item Obstacle in lane.
+    \item Parked vehicle opening door.
+    \item Slow moving hazard at lane edge.
+    \item Vehicle invading lane on bend.
+  \end{itemize}
+  \item Braking and lane changing \begin{itemize}
+    \item Logitudinal control after leading vehicle's brake.
+    \item Obstacle avoidance without prior action.
+    \item Pedestrian emerging from behind parked vehicle.
+    \item Obstacle avoidance with prior action - pedestrian, bicycle, or vehicle.
+    \item Parking cut-in.
+  \end{itemize}
+  \item Parking \begin{itemize}
+    \item Parallel parking exit into traffic.
+  \end{itemize}
+\end{enumerate}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\linewidth]{scenario.png}
+  \caption{Example of scenarios.}~\label{fig:scenarios}
+\end{figure}
+
+\subsubsection{Successive experimentation}
+Successive experimentation will involve adversarial testing the various scenarios with different intesities of traffic, weather and pedestrians. I will test various samplers to see which one performs better and as many ADSs as possible to compare them against each other. A possible extension would be to re-train one ADS with the framework to be able to show better result when re-testing it. 
+Some further work can also be done to experiment with faulty or missing sensor data. This will show how robust the perception module is with short periods of sensor data omission. Similar experiments have been carried out  on UAVs' testing~\cite{li2021metamorphic}.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.95\linewidth]{methodology.png}
+  \caption{Methodology outline.}~\label{fig:methodology}
+\end{figure}
+
+\subsection{Summary}
+The main feature we are interested in testing through this first part of the project is the performance of the perception module of the ADS\@. The way to quantify the robustness will be to run the ADS through all the different test and measure the difference in prediction from the ADS with the ground truth from Carla. For example, during the task of lane detection we can access the confidence of the prediction and compare it to the ground truth. With varying weather conditions we'll keep observing if the ADS misses or misclassifies lanes at any time, and what level of confidence does it have. At the end of all tests we should be able to generate a score for each task and subtask, and lastly assign a general score on a custom scale.
+My current plan involves continuing to integrate more ADSs to test and come up with a novel sampler to select the pararameters. The aim is to have a publication ready by February.
+Finally, all tasks for an ADS will be tested and compared by testing against other multi-module ADSs or end-to-end ADSs. At last an exhaustive paper will be produced detailing, innovations, and shortcomings of the framework.
+
+\pagebreak
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Physical Camouflage Attack Using Mapping} \label{sec:camouflage}
+
+\subsection{Introduction}
+Physical camouflage attacks on vehicles is used to test the vehicle detection task of ADSs. Vehicles's paintable body is covered in custom made adversarial patterns designed to cause misclassification or concealment of a vehicle from an autonomous vehicle's ADS. 
+Testing vehicle detection capabilities of ADSs is a critical aspect in ensuring the safety and reliability of these systems. Unlike road sign recognition attacks carried out by drawing carefully calibrated patches on signs, changing the texture of a car in not unlawful. Therefore, there is a higher risk of these attack occuring in real life. For these reasons there is a need to test ADSs against adversarial vehicle camouflages.
+
+\subsection{Related Work}
+Table~\ref{tab:adv-attacks} listed all the various physical adversarial attack found in literature for the task of vehicle detection of ADSs. As explained in section~\ref{sec:ads-testing}, all these attack can be classified as L1 attack: testing deep learning models.
+CAMOU~\cite{zhang2019camou} was one of the first to address this type of adversarial attack. Their implementation included two steps. The first step was to train a neural approximation function to imitate how a simulator applies camouflages to vehicles and the second step was to determine how a vehicle detector performs given images of the camouflaged vehicles. The paper's finding show that a specific optimised camouflage can hide a vehicle from the target image-based detector and generalize to different environment, vehicles, and object detectors. Another paper~\cite{wu2020physical} tries to improve on previous work by using an Enlarge-and-Repeat process and a Discrete Searching method, to craft mosaic-like adversarial vehicle textures without access to neither the model weight of the detector nor a differential rendering procedure. Another interesting paper@\cite{wang2021dual} uses realistiacally looking patterns painted on the car's body to make an object detector misclassify a vehicle with an attack method they called Dual Attention Suppression attack. The current state-of-the-art and latest paper in this field uses a Differentiable Transformation Network to perform camouflage attacks on vehicle. They first train a DTN to make photo-realistic projections of a custom texture to a vehicle inside the CARLA simulator then they use a search method to optimise the texture to fool a target object detector model, figure~\ref{fig:dta-pipeline} shows the pipeline of their attack method. They achieved better results than other works in the literature including better transferability, figure~\ref{fig:dta} shows the output of an object detector model with a normal vehicle, a vehicle with DAS camouflage, a vehicle with random camouflage, and a vehicle with DTA camouflage.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\linewidth]{dta-2.png}
+  \caption{DTA pipeline.}~\cite{suryanto2022dta}\label{fig:dta-pipeline}
+\end{figure}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\linewidth]{dta.png}
+  \caption{Example of various camouflages.}~\cite{suryanto2022dta}\label{fig:dta}
+\end{figure}
+
+The DTA paper implements differentiability into their projections which is what allows them to calculate a better pattern than previous work. Futhermore, they use photo-realistic projections which return better results when trying to replicate the work in the real-world. However, there are few limitations posed by their solution: they implement a projection instead of a mapping which would directly change the texture inside the simulator removing the need to train a network to learn how to do photo-realistic projections; the paper also doesn't consider the naturalness of the attack pattern, they solely focused on a mosaic like pattern which would be very noticeable on an actual vehicle; they also only test with object detector models instead of ADSs, this follows from the fact that they are not changing the texture inside the simulator using the Unreal engine.
+
+\subsection{Implementation}
+The system I am proposing to implement would eliminate the limitations of the current state-of-the-art paper. Firstly, I want to implement mapping instead of projections, making my solution usable to test ADSs classifying it as an L4 testing system and removing the need to worry about photorealism by leveraging the game engine used by CARLA. Furthermore, I would like to be able to optimise various different looking patterns, not just mosaic-based patterns. Other patterns could be dirt on the vehicle's body, snow, or the patterns used by manufacturers on new vehicles. Figure~\ref{fig:patterns} shows some of the various patterns I intend to use.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\linewidth]{patterns.png}
+  \caption{Example of various camouflage patterns.}\label{fig:patterns}
+\end{figure}
+
+\noindent Working from current state-of-the-art solutions, the main implementation idea consists of the following steps:
+\begin{enumerate}
+  \item Generate a random seed texture: this involves creating the initial random pattern from which we want to optimise for the task. This allows our solution to come up with more natural looking patterns instead of the random RGB camouflage patterns that most previous works have worked with. 
+  \item Apply the texture to the Vehicle: this step consists of applying the texture we have to the vehicle's paintable area during runtime.
+  \item Test with a target object detector model: In this step we will take a picture from a well-positioned camera inside the CARLA simulator of the target vehicle and feed that image as input to an object detector trained on the Imagenet database.
+  \item Refine the texture with back propagation: This step will try to optimise the texture using the gradient and output of the object detector model.
+  \item Repeat steps 2 to 4 until we register a low enough confidence on the object detector model
+  \item Save texture: finally, we will be able to save the texture and test it with other object detector models or with ADSs inside our benchmark framework.
+\end{enumerate}
+\subsubsection{Problems}
+The major problem with the implementation of these attack is the limitations of current state-of-the-art simulators to dynamically change texture of a vehicle's body. CARLA offers changes to be made to all materials and texture but only from source code, not at runtime. The parameters required to change the texture are not exposed to the API. This greatly increases the difficulty of generating, applying and testing textures automatically. For each cycle, you would need to manually apply the texture and run the testing phase. The solution to this problem is to create custom API to expose the parameters we want to change during runtime. This requires knowledge of C++, Python, and Boost. 
+\subsection{Summary}
+In conclusion, the idea for this project is very promising and can be turned into a very valuable paper with substantial novelty due to the limitations it tries to overcome from the current state-of-art paper on the subject. However, the process of writing custom API is very tedious, so it will be something I'll be working in the background on, due to the limited time in a PhD.
+
+\pagebreak
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Future Works}
+In this section I will introduce my plans for the future following the publication of the first paper based on section~\ref{sec:benchmark}.
+\subsection{Attack Implementation}
+The second milestone is the implentation of the camouflage attack intrduced in section~\ref{sec:camouflage} with the ADS benchmark framework of section~\ref{sec:benchmark}. This will enable us to test various different ADSs in the high fidelity simulator CARLA against adversarial vehicle detection attacks, which will make this the only paper in this field to be classified as an L4 testing framework. This will be an easy step as I have made sure to use the same simulator and setup to develop the vehicle detection attack and the benchmark framework.
+\subsubsection{Traffic Sign Recognition}
+This project will involve manipulating the appearance of a traffic sign through a carefully crafted visual pattern on a strategically placed billboard to deceive an ADS. This work will be an extension of previous work~\cite{zolfi2021translucent,patel2020bait}. Our implementation will improve on these by being integrated in the testing framework as the vehicle detection task.
+\subsection{Accident Reconstruction}
+This project builds on the works of Dr Tri Huynh's paper AC3R~\cite{huynh2019ac3r} and expands on it by utilizing Carla as the simulated environment and employing gpt-4's natural language understanding. I propose an automated system that leverages natural language processing (NLP) techniques and machine learning algorithms to extract key details from the reports and generate detailed crash reconstructions. 
+The system should aim to improve the efficiency and accuracy of accident reconstruction, providing valuable insights for road safety research, accident prevention, and autonomous vehicle development.
+Here is a list of possible steps for the execution of this project:
+\begin{enumerate}
+  \item Find an open-source database of police reports or generate them.
+  \item Use GPT-4's API to extract key information from the reports.
+  \item Use the information extracted to recreate the exact conditions of the crash.
+  \item Use the information extracted to create a script file to run the simulation.
+  \item Run the simulation and assess how accurate it is.
+  \item Extra: automate a comparison between the simulated damage and the one described in the report to assess the accuracy of each simulation.
+  \item Extra: Depending on the type of accident, use ADSs to run the controls of the car just before the accident to see if it was avoidable by a self-driving car.
+\end{enumerate}
+
+\subsection{Graphical Custom Scenario Generation}
+Another project of interest focuses on creating a graphical interface combined with GPT-4 to generate custom testing scenarios from a text prompt and optimising them through the interface to be able to conduct ADS testing quickly and efficiently with the CARLA simulator. The system should be able to create any type of scenario and test it automatically on one on many ADSs at a time. The system should allow the selection of one of the 14 maps offered by CARLA or custom maps, be able to create custom maps, select a route, insert trigger points for scenarios, allow the selection of various parameters such as weather, traffic, pedestrians, etc. The system will ultimately generate various YAML files that contain the configurations required to run an instance of CARLA and the ADS to test and should output the result of the test. This project addresses the need in the industry and academia to speed up and facilitate ADS testing.
+
+\pagebreak
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Conclusion}
+With the government's approval of driverless vehicles for use on UK motorways in 2021, there is an anticipation of a substantial growth in the number of autonomous cars on the road. However, the release of non-robust technology could lead to an increased risk. This is where the proposed research comes into play. By delving into driverless car safety, this research aims to deepen our understanding and knowledge in this domain, thereby facilitating a smooth transition and adoption of autonomous vehicles.
+
+\vspace{0.25cm}
+
+The findings of this research will be instrumental in building expertise for various stakeholders, including manufacturers, government authorities, insurance industry, and the researcher community. These insights will enable them to continuously improve the underlying technology of autonomous vehicles and effectively address the risks associated with them.
+
+\vspace{0.25cm}
+Manufacturers can benefit from the research findings by refining their autonomous vehicle systems, making them more robust and reliable. Government authorities can leverage this knowledge to establish appropriate regulations and policies that ensure the safe operation of driverless cars. The insurance industry can use the research findings to assess risks accurately, determine insurance premiums, and develop policies tailored to autonomous vehicles. Lastly, the research community can expand on these findings to further advance the field of autonomous driving and enhance safety measures.
+
+\vspace{0.25cm}
+By focusing on driverless car safety, this research aims to contribute to a comprehensive understanding of the challenges and potential risks associated with autonomous vehicles. Ultimately, it strives to facilitate the ongoing improvement of technology and drive the reduction of risks in the realm of autonomous driving.  
+
+\pagebreak
+\bibliographystyle{apacite}
+\bibliography{../references.bib}
+
+\end{document}
