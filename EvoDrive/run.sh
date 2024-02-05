@@ -30,11 +30,11 @@ export DEBUG_CHALLENGE=1
 #export TEAM_AGENT=${LEADERBOARD_ROOT}/leaderboard/autoagents/human_agent.py
 #export TEAM_AGENT=${LEADERBOARD_ROOT}/leaderboard/autoagents/npc_agent.py
 
-export TEAM_AGENT=${LEADERBOARD_ROOT}/team_code/interfuser_agent.py
-export TEAM_CONFIG=${LEADERBOARD_ROOT}/team_code/interfuser_config.py
+#export TEAM_AGENT=${LEADERBOARD_ROOT}/team_code/interfuser_agent.py
+#export TEAM_CONFIG=${LEADERBOARD_ROOT}/team_code/interfuser_config.py
 
-# export TEAM_AGENT=${LEADERBOARD_ROOT}/team_code/tcp_agent.py
-# export TEAM_CONFIG=${LEADERBOARD_ROOT}/team_code/tcp.ckpt
+export TEAM_AGENT=${LEADERBOARD_ROOT}/team_code/tcp_agent.py
+export TEAM_CONFIG=${LEADERBOARD_ROOT}/team_code/tcp.ckpt
 
 
 export CHECKPOINT_ENDPOINT=${LEADERBOARD_ROOT}/results.json
