@@ -7,3 +7,13 @@ test 1
 	evalutations 1335
 	generations 89
 	malloc error termination
+	
+test 2 
+	tcp agent
+	ga testing with default parameters
+	no traffic 
+	town 05
+	pop size 15
+	evaluations 330
+	generations 22
+	19 hours termination criteria
