@@ -4,7 +4,7 @@ leaderboard_input_file = 'leaderboard/data/custom_route.xml'
 results_filepath = 'data/results/'
 routes_filepath = 'data/routes'
 
-process_name = "Carla"
+
 carla_pid = []
 
 ### Genetic Algorithm variables ####
@@ -12,15 +12,15 @@ carla_pid = []
 restart_interval = 5
 pop_size = 15
 #n_max_gen = 30 #not used
-max_time = "19:00:00"
+max_time = "10:00:00"
 sim_n = 1
 
 ####################################
 
 WEATHERS = {'route_percentage': [100,100],
                  'cloudiness': [0,100], 
-                 'fog_density': [0,10],  #[0,100]
-                 'fog_distance': [0,10], #[0,100]
+                 'fog_density': [0,100],  #[0,100]
+                 'fog_distance': [0,100], #[0,100]
                  'precipitation': [0,100], 
                  'precipitation_deposits': [0,100], 
                  'sun_altitude_angle': [-90,90], 

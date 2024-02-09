@@ -10,8 +10,10 @@ from pymoo.visualization.scatter import Scatter
 from pymoo.core.problem import ElementwiseProblem
 from pymoo.optimize import minimize
 from pymoo.termination import get_termination
+
 import os
 import numpy as np
+import random
 import time
 import json
 import math
@@ -23,10 +25,10 @@ from parameters import *
 from utils import generate_xml
 from utils import save_route_data
 
+process_name = 'Carla'
+
 
 def run_simulation(x):
-    
-    #town = TOWNS[int(round(x[9]))]
     
     start = x[9]
     end = x[10]
@@ -40,11 +42,20 @@ def run_simulation(x):
     
     print("\033[1m> Generating route\033[0m")
     all_spawn_points = tmap.get_spawn_points()
-    start_wp = all_spawn_points[int(round((start * (len(all_spawn_points)-1))/100))]
-    end_wp = all_spawn_points[int(round((end * (len(all_spawn_points)-1))/100))]
+    start_index = int(round((start * (len(all_spawn_points)-1))/100))
+    end_index = int(round((end * (len(all_spawn_points)-1))/100))
+    
+    if (start_index == end_index):
+        if(start_index == (len(all_spawn_points) - 1)):
+            end_index = end_index - 1
+        else:
+            end_index = end_index + 1    
+        
+    start_wp = all_spawn_points[start_index]
+    end_wp = all_spawn_points[end_index]
     grp = GlobalRoutePlanner(tmap, 1.0)
     route = grp.trace_route(start_wp.location, end_wp.location)
-    #print(route)
+    
     print("\033[1m> Generating weather\033[0m")
     weather_values = list(np.around(np.array(x[0:10]),1)) 
     weather_values.insert(0, 100.0)
@@ -129,8 +140,6 @@ def run_ga():
     # -> wetness [0,100] 
     # -> wind_intensity [0,100]
 
-    # -> Town [1, 2, 3, 4, 5, 6, 7, 10, 12]
-
     # -> initial_waypoint [depends on town] -> map (0,100) to (0, len(all_spawn_points))
     # -> final_waypoint   [depends on town]
     
@@ -152,7 +161,7 @@ def run_ga():
     mutation = PolynomialMutation(prob=1.0, eta=10)
     
     algorithm = GA(pop_size,
-                   eliminate_dupliucates = True)
+                   eliminate_duplicates = True)
     
     problem = MyProblem(n_var, n_obj, 1, 0, xl, xu)
     termination = get_termination("time", max_time)
@@ -171,17 +180,62 @@ def run_ga():
     Scatter().add(F).show()
 
 
-
+# random tester
+def run_random(max_evals):
+    global sim_n
+    
+    while True:
+        # generate random values
+        x = []
+        for key, value in WEATHERS.items():
+            x.append(random.uniform(value[0], value[1]))
+        x.append(random.uniform(0,100))
+        x.append(random.uniform(0,100))
+            
+        print("\n")
+        print("\n\033[1m========= Generating Scene_eval_n_{} =========\033[0m".format(sim_n))
+        run_simulation(x)
+    
+        # save data to csv file
+        save_route_data(sim_n)
+        
+        if(sim_n == max_evals):
+            print("\033[1m> Ending Testing\033[0m")
+            break
+        
+        # restart carla every 'restart_interval' evaluations
+        if sim_n%restart_interval == 0:
+            global carla_pid
+            print("\033[1m> Restarting Carla Server\033[0m")
+            for pid in carla_pid:
+                os.system("kill -9 " + pid)
+            os.system("./launch_carla.sh")
+            carla_pid = []
+            for proc in psutil.process_iter():
+                if process_name in proc.name():
+                    carla_pid.append(str(proc.pid))
+                    
+        sim_n = sim_n + 1
+        
+        
+        
+        
 if __name__ == '__main__':
     global town
     
-    #town = input('Town to test: ')
-    
-    town = 'Town05'
+    town = input('Town to test: ')
+    max_evals = 1000
+    tester = input('Tester to run[GA, RANDOM]: ')
     
     # get carla pid
     for proc in psutil.process_iter():
         if process_name in proc.name():
-            carla_pid.append(str(proc.pid))
-       
-    run_ga()
+            carla_pid.append(str(proc.pid)) 
+    
+    print(carla_pid)
+    
+    # run tester
+    if tester == 'GA':
+        run_ga()
+    elif tester == 'RANDOM':
+        run_random(max_evals)
