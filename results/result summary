@@ -17,3 +17,11 @@ test 2
 	evaluations 330
 	generations 22
 	19 hours termination criteria
+	
+	
+test 3
+	npc agent
+	random testing
+	no traffic
+	town 05
+	evaluations

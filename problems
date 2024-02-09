@@ -181,6 +181,7 @@ algorithm to monitor the progress (online incremental learning)
 got first restulst
 now testing with tcp agent
 had to supress error regarding sensors not being correct
+testing with tcp done but got only 330 evals in 19 hours instead of over 1k with npc agent
 	
 	
 	
