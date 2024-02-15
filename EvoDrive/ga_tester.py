@@ -44,8 +44,9 @@ def run_simulation(x):
     all_spawn_points = tmap.get_spawn_points()
     start_index = int(round((start * (len(all_spawn_points)-1))/100))
     end_index = int(round((end * (len(all_spawn_points)-1))/100))
-    
+    print('start = ' + str(start_index) + ' and  end = ' + str(end_index))
     if (start_index == end_index):
+        print('changed the indexessssss')
         if(start_index == (len(all_spawn_points) - 1)):
             end_index = end_index - 1
         else:
@@ -74,14 +75,20 @@ def run_simulation(x):
     #save xml
     generate_xml(town, route, dict(weather_settings), scen_type, scenario_attributes, sim_n, routes_filepath)
     
-    #run sim
-    os.system("./leaderboard/scripts/run_evaluation.sh")            
+    driving_score = 1000
     
-    #read json average driving score
-    with open(leaderboard_results_filepath) as f:
-        data = json.load(f)
+    try:
+        #run sim
+        os.system("./leaderboard/scripts/run_evaluation.sh")            
+        #read json average driving score
+        with open(leaderboard_results_filepath) as f:
+            data = json.load(f)
+        driving_score = data["values"][0]
         
-    driving_score = data["values"][0]
+    except Exception as e:
+        print(e)
+        
+    
     
     print("\033[1m> Average driving score = {}\033[0m".format(driving_score))
     
@@ -106,7 +113,7 @@ class MyProblem(ElementwiseProblem):
         print("\n")
         print("\n\033[1m========= Generating Scene_eval_n_{} =========\033[0m".format(sim_n))
         out["F"] = run_simulation(x)
-        out["G"] = x[9]-x[10]-5
+        #out["G"] = x[9]-x[10]-5
         #out["H"] = x[10]-x[11]
         
         # save data to csv file
@@ -121,7 +128,7 @@ class MyProblem(ElementwiseProblem):
             os.system("./launch_carla.sh")
             carla_pid = []
             for proc in psutil.process_iter():
-                if process_name in proc.name():
+                if 'Carla'  in proc.name():
                     carla_pid.append(str(proc.pid))
                     
         sim_n = sim_n + 1
@@ -163,8 +170,8 @@ def run_ga():
     algorithm = GA(pop_size,
                    eliminate_duplicates = True)
     
-    problem = MyProblem(n_var, n_obj, 1, 0, xl, xu)
-    termination = get_termination("time", max_time)
+    problem = MyProblem(n_var, n_obj, 0, 0, xl, xu)
+    termination = get_termination("n_eval", 1005)
     
     res = minimize(problem,
                    algorithm,
@@ -175,9 +182,11 @@ def run_ga():
     
     
     print("Best solution found: \nX = %s\nF = %s" % (res.X, res.F))
+    
+    print("\033[1m> Ending Testing\033[0m")
 
-    F = problem.pareto_front()
-    Scatter().add(F).show()
+    #F = problem.pareto_front()
+    #Scatter().add(F).show()
 
 
 # random tester
@@ -213,7 +222,9 @@ def run_random(max_evals):
             carla_pid = []
             for proc in psutil.process_iter():
                 if process_name in proc.name():
-                    carla_pid.append(str(proc.pid))
+                    carla_pid.append(str(proc.pid)) 
+    
+            print(carla_pid)
                     
         sim_n = sim_n + 1
         
@@ -223,9 +234,12 @@ def run_random(max_evals):
 if __name__ == '__main__':
     global town
     
-    town = input('Town to test: ')
+    #town = input('Town to test: ')
+    town = 'Town05'
     max_evals = 1000
-    tester = input('Tester to run[GA, RANDOM]: ')
+    #tester = input('Tester to run[GA, RANDOM]: ')
+    
+    tester = 'GA'
     
     # get carla pid
     for proc in psutil.process_iter():
