@@ -1,12 +1,12 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.4.25)  14 FEB 2024 18:27
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2024.2.15)  15 FEB 2024 19:18
 entering extended mode
- \write18 enabled.
+ restricted \write18 enabled.
  file:line:error style messages enabled.
  %&-line parsing enabled.
-**c:/Users/adara/OneDrive/Projects/EvoDrive/paper/root.tex
-(c:/Users/adara/OneDrive/Projects/EvoDrive/paper/root.tex
+**/home/lunet/coak12/playground/paper/root.tex
+(/home/lunet/coak12/playground/paper/root.tex
 LaTeX2e <2021-11-15> patch level 1
-L3 programming layer <2022-04-20> (./ieeeconf.cls
+L3 programming layer <2022-01-21> (./ieeeconf.cls
 Document Class: ieeeconf 2016/4/23 revision V1.6b by Pradeep Misra
 \@IEEEtrantmpdimenA=\dimen138
 \@IEEEtrantmpdimenB=\dimen139
@@ -14,7 +14,7 @@ Document Class: ieeeconf 2016/4/23 revision V1.6b by Pradeep Misra
 \@IEEEtrantmpcountB=\count186
 \@IEEEtrantmptoksA=\toks16
 LaTeX Font Info:    Trying to load font information for OT1+ptm on input line 794.
-(c:/texlive/2022/texmf-dist/tex/latex/psnfss/ot1ptm.fd
+(/usr/share/texlive/texmf-dist/tex/latex/psnfss/ot1ptm.fd
 File: ot1ptm.fd 2001/06/04 font definitions for OT1/ptm.
 )
 \@IEEEnormalsizefontbaselineskip=\skip47
@@ -88,26 +88,26 @@ LaTeX Font Info:    Font shape `OT1/ptm/bx/it' in size <24> not available
 )
 ** ATTENTION: Overriding command lockouts (line 3).
 ** ATTENTION: Overriding IEEE standard margins (line 4).
-(c:/texlive/2022/texmf-dist/tex/latex/graphics/graphicx.sty
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/graphicx.sty
 Package: graphicx 2021/09/16 v1.2d Enhanced LaTeX Graphics (DPC,SPQR)
- (c:/texlive/2022/texmf-dist/tex/latex/graphics/keyval.sty
+ (/usr/share/texlive/texmf-dist/tex/latex/graphics/keyval.sty
 Package: keyval 2014/10/28 v1.15 key=value parser (DPC)
 \KV@toks@=\toks17
-) (c:/texlive/2022/texmf-dist/tex/latex/graphics/graphics.sty
+) (/usr/share/texlive/texmf-dist/tex/latex/graphics/graphics.sty
 Package: graphics 2021/03/04 v1.4d Standard LaTeX Graphics (DPC,SPQR)
- (c:/texlive/2022/texmf-dist/tex/latex/graphics/trig.sty
+ (/usr/share/texlive/texmf-dist/tex/latex/graphics/trig.sty
 Package: trig 2021/08/11 v1.11 sin cos tan (DPC)
-) (c:/texlive/2022/texmf-dist/tex/latex/graphics-cfg/graphics.cfg
+) (/usr/share/texlive/texmf-dist/tex/latex/graphics-cfg/graphics.cfg
 File: graphics.cfg 2016/06/04 v1.11 sample graphics configuration
 )
 Package graphics Info: Driver file: pdftex.def on input line 107.
- (c:/texlive/2022/texmf-dist/tex/latex/graphics-def/pdftex.def
+ (/usr/share/texlive/texmf-dist/tex/latex/graphics-def/pdftex.def
 File: pdftex.def 2020/10/05 v1.2a Graphics/color driver for pdftex
 ))
 \Gin@req@height=\dimen149
 \Gin@req@width=\dimen150
-) (c:/texlive/2022/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def
-File: l3backend-pdftex.def 2022-04-20 L3 backend support: PDF output (pdfTeX)
+) (/usr/share/texlive/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def
+File: l3backend-pdftex.def 2022-01-12 L3 backend support: PDF output (pdfTeX)
 \l__color_backend_stack_int=\count197
 \l__pdf_internal_box=\box51
 ) (./root.aux)
@@ -127,7 +127,7 @@ LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 30.
 LaTeX Font Info:    ... okay on input line 30.
 LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 30.
 LaTeX Font Info:    ... okay on input line 30.
- (c:/texlive/2022/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
+ (/usr/share/texlive/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count198
 \scratchdimen=\dimen151
@@ -140,10 +140,10 @@ LaTeX Font Info:    ... okay on input line 30.
 \MPnumerator=\count268
 \makeMPintoPDFobject=\count269
 \everyMPtoPDFconversion=\toks19
-) (c:/texlive/2022/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
+) (/usr/share/texlive/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
 Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
 Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 485.
- (c:/texlive/2022/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
+ (/usr/share/texlive/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Live
 ))
 LaTeX Font Info:    Calculating math sizes for size <11> on input line 33.
@@ -160,7 +160,7 @@ LaTeX Font Info:    External font `cmex10' loaded for size
 LaTeX Font Info:    External font `cmex10' loaded for size
 (Font)              <5> on input line 33.
 LaTeX Font Info:    Trying to load font information for OT1+pcr on input line 33.
- (c:/texlive/2022/texmf-dist/tex/latex/psnfss/ot1pcr.fd
+ (/usr/share/texlive/texmf-dist/tex/latex/psnfss/ot1pcr.fd
 File: ot1pcr.fd 2001/06/04 font definitions for OT1/pcr.
 )
 Underfull \hbox (badness 10000) in paragraph at lines 33--33
@@ -173,19 +173,68 @@ Underfull \hbox (badness 10000) in paragraph at lines 33--33
  []
 
 LaTeX Font Info:    Trying to load font information for TS1+ptm on input line 41.
-(c:/texlive/2022/texmf-dist/tex/latex/psnfss/ts1ptm.fd
+(/usr/share/texlive/texmf-dist/tex/latex/psnfss/ts1ptm.fd
 File: ts1ptm.fd 2001/06/04 font definitions for TS1/ptm.
 )
+
+LaTeX Warning: Citation `dosovitskiy2017carla' on page 1 undefined on input line 49.
+
+
+LaTeX Warning: Citation `shah2018airsim' on page 1 undefined on input line 49.
+
+
+LaTeX Warning: Citation `rong2020lgsvl' on page 1 undefined on input line 49.
+
+
+LaTeX Warning: Citation `deepdrive_2020' on page 1 undefined on input line 49.
+
+
+LaTeX Warning: Citation `shao2023safety' on page 1 undefined on input line 49.
+
+
+LaTeX Warning: Citation `wu2022trajectory' on page 1 undefined on input line 49.
+
+
+LaTeX Warning: Citation `chen2020learning' on page 1 undefined on input line 49.
+
 LaTeX Font Info:    External font `cmex10' loaded for size
 (Font)              <7> on input line 52.
- [1{c:/texlive/2022/texmf-var/fonts/map/pdftex/updmap/pdftex.map}
+[1{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}
 
 
 ]
 
-LaTeX Warning: `h' float specifier changed to `ht'.
+LaTeX Warning: Citation `kato2018autoware' on page 2 undefined on input line 64.
 
-(./root.bbl [2])
+
+LaTeX Warning: Citation `chen2020learning' on page 2 undefined on input line 64.
+
+
+LaTeX Warning: Citation `wu2022trajectory' on page 2 undefined on input line 65.
+
+
+LaTeX Warning: Citation `chen2020learning' on page 2 undefined on input line 65.
+
+
+LaTeX Warning: Citation `shao2023safety' on page 2 undefined on input line 65.
+
+/home/lunet/coak12/playground/paper/root.tex:98: Missing $ inserted.
+<inserted text> 
+                $
+l.98 ...s to be set: distance, direction, blocker_
+                                                  model, and crossing_angle.
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+/home/lunet/coak12/playground/paper/root.tex:99: Missing $ inserted.
+<inserted text> 
+                $
+l.99 
+     
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+[2] (./root.bbl)
 
 ** Conference Paper **
 Before submitting the final camera ready copy, remember to:
@@ -197,20 +246,29 @@ Before submitting the final camera ready copy, remember to:
  uses only Type 1 fonts and that every step in the generation
  process uses the US letter (8.5in X 11in) paper size.
 
-[3] (./root.aux) ) 
+[3
+
+] (./root.aux)
+
+LaTeX Warning: There were undefined references.
+
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+
+ ) 
 Here is how much of TeX's memory you used:
- 1972 strings out of 478233
- 33753 string characters out of 5847836
- 340902 words of memory out of 5000000
- 20232 multiletter control sequences out of 15000+600000
- 505803 words of font info for 93 fonts, out of 8000000 for 9000
- 1141 hyphenation exceptions out of 8191
- 55i,10n,62p,3253b,301s stack positions out of 10000i,1000n,20000p,200000b,200000s
-{c:/texlive/2022/texmf-dist/fonts/enc/dvips/base/8r.enc}<c:/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb><c:/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb><c:/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb><c:/texlive/2022/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb><c:/texlive/2022/texmf-dist/fonts/type1/urw/times/utmb8a.pfb><c:/texlive/2022/texmf-dist/fonts/type1/urw/times/utmbi8a.pfb><c:/texlive/2022/texmf-dist/fonts/type1/urw/times/utmr8a.pfb><c:/texlive/2022/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on root.pdf (3 pages, 101533 bytes).
+ 1932 strings out of 480247
+ 32861 string characters out of 5896151
+ 335066 words of memory out of 5000000
+ 19892 multiletter control sequences out of 15000+600000
+ 505774 words of font info for 93 fonts, out of 8000000 for 9000
+ 14 hyphenation exceptions out of 8191
+ 55i,10n,62p,3246b,301s stack positions out of 5000i,500n,10000p,200000b,80000s
+{/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmbi8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
+Output written on root.pdf (3 pages, 115626 bytes).
 PDF statistics:
- 55 PDF objects out of 1000 (max. 8388607)
- 33 compressed objects within 1 object stream
+ 65 PDF objects out of 1000 (max. 8388607)
+ 39 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
 
