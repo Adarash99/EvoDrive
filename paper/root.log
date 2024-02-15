@@ -1,10 +1,10 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.4.25)  4 FEB 2024 16:23
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.4.25)  14 FEB 2024 18:27
 entering extended mode
  \write18 enabled.
  file:line:error style messages enabled.
  %&-line parsing enabled.
-**c:/Users/adara/OneDrive/Lboro-PhD/Papers/evodrive-paper/root.tex
-(c:/Users/adara/OneDrive/Lboro-PhD/Papers/evodrive-paper/root.tex
+**c:/Users/adara/OneDrive/Projects/EvoDrive/paper/root.tex
+(c:/Users/adara/OneDrive/Projects/EvoDrive/paper/root.tex
 LaTeX2e <2021-11-15> patch level 1
 L3 programming layer <2022-04-20> (./ieeeconf.cls
 Document Class: ieeeconf 2016/4/23 revision V1.6b by Pradeep Misra
@@ -177,24 +177,15 @@ LaTeX Font Info:    Trying to load font information for TS1+ptm on input line 41
 File: ts1ptm.fd 2001/06/04 font definitions for TS1/ptm.
 )
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <7> on input line 67.
+(Font)              <7> on input line 52.
  [1{c:/texlive/2022/texmf-var/fonts/map/pdftex/updmap/pdftex.map}
 
 
-] [2] (./root.bbl
+]
 
-./root.bbl:24: LaTeX Error: Something's wrong--perhaps a missing \item.
+LaTeX Warning: `h' float specifier changed to `ht'.
 
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.24 \end{thebibliography}
-                          
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-)
+(./root.bbl [2])
 
 ** Conference Paper **
 Before submitting the final camera ready copy, remember to:
@@ -206,26 +197,20 @@ Before submitting the final camera ready copy, remember to:
  uses only Type 1 fonts and that every step in the generation
  process uses the US letter (8.5in X 11in) paper size.
 
-[3
-
-] (./root.aux)
-
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
-
- ) 
+[3] (./root.aux) ) 
 Here is how much of TeX's memory you used:
- 1962 strings out of 478233
- 33621 string characters out of 5847836
- 340862 words of memory out of 5000000
- 20222 multiletter control sequences out of 15000+600000
- 505774 words of font info for 93 fonts, out of 8000000 for 9000
+ 1972 strings out of 478233
+ 33753 string characters out of 5847836
+ 340902 words of memory out of 5000000
+ 20232 multiletter control sequences out of 15000+600000
+ 505803 words of font info for 93 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 55i,10n,62p,1282b,301s stack positions out of 10000i,1000n,20000p,200000b,200000s
-{c:/texlive/2022/texmf-dist/fonts/enc/dvips/base/8r.enc}<c:/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb><c:/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb><c:/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb><c:/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb><c:/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb><c:/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb><c:/texlive/2022/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb><c:/texlive/2022/texmf-dist/fonts/type1/urw/times/utmb8a.pfb><c:/texlive/2022/texmf-dist/fonts/type1/urw/times/utmbi8a.pfb><c:/texlive/2022/texmf-dist/fonts/type1/urw/times/utmr8a.pfb><c:/texlive/2022/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on root.pdf (3 pages, 123763 bytes).
+ 55i,10n,62p,3253b,301s stack positions out of 10000i,1000n,20000p,200000b,200000s
+{c:/texlive/2022/texmf-dist/fonts/enc/dvips/base/8r.enc}<c:/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb><c:/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb><c:/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb><c:/texlive/2022/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb><c:/texlive/2022/texmf-dist/fonts/type1/urw/times/utmb8a.pfb><c:/texlive/2022/texmf-dist/fonts/type1/urw/times/utmbi8a.pfb><c:/texlive/2022/texmf-dist/fonts/type1/urw/times/utmr8a.pfb><c:/texlive/2022/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
+Output written on root.pdf (3 pages, 101533 bytes).
 PDF statistics:
- 70 PDF objects out of 1000 (max. 8388607)
- 42 compressed objects within 1 object stream
+ 55 PDF objects out of 1000 (max. 8388607)
+ 33 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
 

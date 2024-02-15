@@ -46,75 +46,59 @@ EvoDrive: A Testing Solution for Autonomous Driving Systems based on Evoloutiona
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{INTRODUCTION}
 
-The AV industry has made excellent strides forward in recent years. Currently there are more than 00 AV companies in California alone. Despite the success, what often makes the news are the cases of AV faults leading to accidents and loss of life. We can be almost certain that AVs will be the next big thing for AI, but we cannot jump to that conclusion unless we solve the more glaring problems with this technology. This would reequire to develop new methodologies and techniques as our current tools have proved uneffective to thoroughly test AVs. One of the main problem with testing AVs lies in the core technology that made AVs possible in the first place: machine learning models. More specifically, Deep Neural Networks that are the foundations of more decision making modules and computer vision modules in an AV. These technology are inherently flawed as demonstrated by adversarial attacks, and out of distribution data. These technologies cannot be tested with conventional software testing techniques, or at least not to a good enough standard. The most effective tool we have to our disposal at the moment is testing by searching. Of course, it's not feasible to test every single.
+In recent years, the automotive industry has witnessed a tranformative shift towards autonomus driving technologies, fueled by breakthroughs in artificial intelligence, sensor technologies, and computer hardware. The prospect of fully autonomous vehicles promises not only increased road safety, but also to revolutionize transportation by connecting remote places, improved mobility for the elderly and disabled, alongside strides in cargo tranportation. This would also result in a reduction of cars on the road, resulting in less traffic and lower greenhouse gas emmisions (citation). This hopeful prospect hinges on creating robust Autonomus Driving Systems (ADS). Despite the recent success, there has also been an increasing concern about reliability and safety of ADSs. (add some statistics). To address this, testing and validating ADSs is paramount before deploying such systems into the real-world. Our current tools, such as convetional software testing techniques, have proved uneffective to thoroughly test AVs. One of the main problem with testing AVs lies in the core technology that made AVs possible in the first place: machine learning models. More specifically Deep Neural Networks, these are the foundations of most decision making modules and computer vision modules in an AV. These technology are inherently flawed as demonstrated by adversarial attacks, and out of distribution data. This technology fails to be tested effectively with formal testing because of the complexity of the models. The most effective tool we have to our disposal at the moment is testing by searching. In the context of AVs, identify situations in which the AV systems fail. This could happen due to unseen scenarios during training or unfriendly weather conditions. To test various scenarios and weather conditions in real-life can be quite expensive and dangerous in some cases. Therefore, a lot of research has gone into developing high-fidelity simulators such as CARLA~\cite{dosovitskiy2017carla}, AirSim~\cite{shah2018airsim}, LGSVL~\cite{rong2020lgsvl}, and Deepdrive~\cite{deepdrive_2020}. CARLA is open-source, focused on training and testing AV, and is extensively used option in academia~\cite{shao2023safety},~\cite{wu2022trajectory},~\cite{chen2020learning}. General testing often consists of manually coding test cases in a simulator, which is a lenghty process. Recently, there has been a lot of research into creating better test case generators that reduce the coding amount to describe what a test case should contain with Domain-Specific Modeling Languages such as Scenic and MSDL. Despite this tools, choosing the test cases and the distribution of parameters within each test case is still very much down to human intervention. Only a few frameworks have been developed that combine high fidelity-simulators with complete automated testing. Most of these have some sort of limitations in regards to the route, or other aspects. For example ANTI-CARLA framework modifies weather parameters while the ego car travels on 5 selected segments of a highway which keep recurring, this limits the ego car to experience the same segments of road on each test.
+To address most of the issues with testing ADSs we propose EvoDrive, a framework for automated scenario-based testing with the CARLA simulator. The framework provides the means to test any autonomous driving pipeline. It generates scenarios that fail the system. The main contribution of the paper are as follows.
+\begin{itemize}
+   \item We develop a flexible framework that finds sematically valid scenarios that fail the ADS under test. It is not limited in terms of the route of each test case. It can use any map available with carla and custom maps and it can include traffic scenarios available with the OpenScenario package and custom scenarios.
+   \item The framework can use various algorithms to select the parameters for each test case, including Genetic algorithm, random sampling, evoloutionary algorithm and more.
+   \item The framework allows to create custom test oracles and test for those specific infranctions.
+   \item We present the results of testing a rule-based controller, the TCP controller with random sampling and the genetic algorithm on one town with and without traffic scenarios.
+\end{itemize}
 
+The rest of paper is organized as follows. In Section II we summarize related research in AV testing. We present the problem formulation in Section III. We intrdouce the EvoDrive framework in Section IV and evaluate it in Section V by experimenting on a rule-based controller, TCP and Interfuser. In Section VI we present our conclusions and next possible improvements on EvoDrive.
 
 \section{RELATED WORK}
+In this section we first introduce current progress in ADSs development. Then we summarize existing methods of ADS testing. Finally, we present the existing scenario-based testing framework.
 
-Similar work
+\subsection{Autonomus driving systems}
+ADSs can be divided into two categories depending on how they are developed: modular~\cite{kato2018autoware} and end-to-end~\cite{chen2020learning}. In a modular ADS, the system is divided into distinct components, each responsible for specific tasks or functionalities. These components handle tasks such as perception, decision-making, and control. In an end-to-end ADS, the entire system is treated as a single, unified entity, usually consisting of a large machine learning model. Instead of breaking down the task into individual modules, the system learns to directly map input data from the sensors to output actions to control the vehicle. EvoDrive is designed to test both types as well as hybrid ADSs and controllers. One of the controller we used is the in-built CARLA pid-controller, this is a rule-based controller that follows the route given by abiding to stop and traffic signs. It uses ground truth information directly from the simulator. This was used for initial testing to speed up the development of the framework.
+In addition to this we used actual vision-based ADSs that have been directly trained in CARLA such as TCP~\cite{wu2022trajectory}, LBC~\cite{chen2020learning}, and InterFuser~\cite{shao2023safety}. These ADSs were developed for the CARLA Leaderboard challenge, which is an open competition in which each team is tasked with developing the best ADS which is then tested with an unseen route. The ADSs are classified according to their respective driving score. The LBC system achieved a perfect score on the original CARLA Leaderboard benchmark and on the NoCrash benchmark. This shows that current benchmarks are not always capable of indetifying 'bugs' in these systemsAs a result of this compee further divided into real-world, hardware-in-loop, and software-in-loop. Real-wtition we have access to various capable ADS that would work really well to test our framework and attempt to find scenes in which they fail which were not found with the normal CARLA Leaderboard testing framework.
+\subsection{ADS testing}
+Effective ADS testing is an iterative process that combines various testing methodologies to address different aspects of the system's functionality and safety. For modular systems, unit testing is the most effective at finding and fixing problems in each module. Generic simulation testing is the most used approach to test the entire system. This involves navigating the vehicle in a simulated environment with varying factors. While generic testing is necessary, it is inneficient in covering edge cases. To fix this, scenario-based testing has been proposed. Based on the platform, this test can borld means that a scenario is constructed in the real-world. This can be costly and prohibitibly dangerous for some scenarios, e.g. collisions, or involving pedestrians. Hardware-in-loop and software-in-loop, on the other hand, test the ADS in a simulated environment. Hardware-in-loop differs from software-in-loop as it uses the actual hardware that will be installed in the vehicle to run the ADS.
+Our proposed framework, EvoDrive, can be classified as a Scenario-based testing framework
 
-\section{METHODOLOGY}
-
-Before you begin to format your paper, first write and save the content as a separate text file. Keep your text and graphic files separate until after the text has been formatted and styled. Do not use hard tabs, and limit use of hard returns to only one return at the end of a paragraph. Do not add any kind of pagination anywhere in the paper. Do not number text heads-the template will do that for you.
-
-Finally, complete content and organizational editing before formatting. Please take note of the following items when proofreading spelling and grammar:
-
-\subsection{Abbreviations and Acronyms} Define abbreviations and acronyms the first time they are used in the text, even after they have been defined in the abstract. Abbreviations such as IEEE, SI, MKS, CGS, sc, dc, and rms do not have to be defined. Do not use abbreviations in the title or heads unless they are unavoidable.
-
-\subsection{Units}
-
-\begin{itemize}
-
-\item Use either SI (MKS) or CGS as primary units. (SI units are encouraged.) English units may be used as secondary units (in parentheses). An exception would be the use of English units as identifiers in trade, such as 3.5-inch disk drive.
-\item Avoid combining SI and CGS units, such as current in amperes and magnetic field in oersteds. This often leads to confusion because equations do not balance dimensionally. If you must use mixed units, clearly state the units for each quantity that you use in an equation.
-\item Do not mix complete spellings and abbreviations of units: Wb/m2 or webers per square meter, not webers/m2.  Spell out units when they appear in text: . . . a few henries, not . . . a few H.
-\item Use a zero before decimal points: 0.25, not .25. Use cm3, not cc. (bullet list)
-
-\end{itemize}
+\subsection{Testing frameworks}
+ANTI-CARLA
+AutoFuzz
 
 
-\subsection{Equations}
 
-The equations are an exception to the prescribed specifications of this template. You will need to determine whether or not your equation should be typed using either the Times New Roman or the Symbol font (please no other font). To create multileveled equations, it may be necessary to treat the equation as a graphic and insert it into the text after your paper is styled. Number equations consecutively. Equation numbers, within parentheses, are to position flush right, as in (1), using a right tab stop. To make your equations more compact, you may use the solidus ( / ), the exp function, or appropriate exponents. Italicize Roman symbols for quantities and variables, but not Greek symbols. Use a long dash rather than a hyphen for a minus sign. Punctuate equations with commas or periods when they are part of a sentence, as in
+\section{PROBLEM FORMULATION}
 
-$$
-\alpha + \beta = \chi \eqno{(1)}
-$$
+\section{EVODRIVE FRAMEWORK}
+In this section we present our testing framework Evodrive and its main components as shown in figure ?.
 
-Note that the equation is centered using a center tab stop. Be sure that the symbols in your equation have been defined before or immediately following the equation. Use (1), not Eq. (1) or equation (1), except at the beginning of a sentence: Equation (1) is . . .
-
-\subsection{Some Common Mistakes}
-\begin{itemize}
-
-
-\item The word data is plural, not singular.
-\item The subscript for the permeability of vacuum ?0, and other common scientific constants, is zero with subscript formatting, not a lowercase letter o.
-\item In American English, commas, semi-/colons, periods, question and exclamation marks are located within quotation marks only when a complete thought or name is cited, such as a title or full quotation. When quotation marks are used, instead of a bold or italic typeface, to highlight a word or phrase, punctuation should appear outside of the quotation marks. A parenthetical phrase or statement at the end of a sentence is punctuated outside of the closing parenthesis (like this). (A parenthetical sentence is punctuated within the parentheses.)
-\item A graph within a graph is an inset, not an insert. The word alternatively is preferred to the word alternately (unless you really mean something that alternates).
-\item Do not use the word essentially to mean approximately or effectively.
-\item In your paper title, if the words that uses can accurately replace the word using, capitalize the u; if not, keep using lower-cased.
-\item Be aware of the different meanings of the homophones affect and effect, complement and compliment, discreet and discrete, principal and principle.
-\item Do not confuse imply and infer.
-\item The prefix non is not a word; it should be joined to the word it modifies, usually without a hyphen.
-\item There is no period after the et in the Latin abbreviation et al..
-\item The abbreviation i.e. means that is, and the abbreviation e.g. means for example.
-
-\end{itemize}
-
-
+\subsection{Scenario generation}
+The first component is the scenario generator. It includes the algorithm used for selecting the parameters and a yaml file generator that is read by the module running the scenario. The scenario generator selects the values for each parameter using the algorithm specified, then it makes sure the resulting scene is semantically correct and it generates the output file run the simulation. The available parameters to be modified, alongside there upper and lower limits, are as follows.
+\begin{enumerate}
+   \item Cloudiness (0 to 100)
+   \item Fog density (0 to 100)
+   \item Fog distance (0 to 100)
+   \item Precipitation (0 to 100)
+   \item Precipitation deposits (0 to 100)
+   \item Sun altitude angle (-90 to 90)
+   \item Sun azimuth angle (0 to 360)
+   \item Wetness (0 to 100)
+   \item Wind intesity (0 to 100)
+   \item Intial waypoint (0 to 100)
+   \item Final waypoint (0 to 100)
+   \item Scenario (0 to 40)
+\end{enumerate}
+The parameters 1-9 are weather parameters, and are provided by CARLA to be modified as required. They have an uppe
+\subsection{Runnig the scenario}
+\subsection{Evaluation}
 \section{RESULTS}
-
-Use this sample document as your LaTeX source file to create your document. Save this file as {\bf root.tex}. You have to make sure to use the cls file that came with this distribution. If you use a different style file, you cannot expect to get required margins. Note also that when you are creating your out PDF file, the source file is only part of the equation. {\it Your \TeX\ $\rightarrow$ PDF filter determines the output file size. Even if you make all the specifications to output a letter file in the source - if your filter is set to produce A4, you will only get A4 output. }
-
-It is impossible to account for all possible situation, one would encounter using \TeX. If you are using multiple \TeX\ files you must make sure that the ``MAIN`` source file is called root.tex - this is particularly important if your conference is using PaperPlaza's built in \TeX\ to PDF conversion tool.
-
-\subsection{Headings, etc}
-
-Text heads organize the topics on a relational, hierarchical basis. For example, the paper title is the primary text head because all subsequent material relates and elaborates on this one topic. If there are two or more sub-topics, the next level head (uppercase Roman numerals) should be used and, conversely, if there are not at least two sub-topics, then no subheads should be introduced. Styles named Heading 1, Heading 2, Heading 3, and Heading 4 are prescribed.
-
-\subsection{Figures and Tables}
-
-Positioning Figures and Tables: Place figures and tables at the top and bottom of columns. Avoid placing them in the middle of columns. Large figures and tables may span across both columns. Figure captions should be below the figures; table heads should appear above the tables. Insert figures and tables after they are cited in the text. Use the abbreviation Fig. 1, even at the beginning of a sentence.
+In this section,we present several experiments to evaluate the usability of EvoDrive for testing. We use the framework to compare the test cases generated by different algorithm. Then, we compare the performance of the LBC controller to the TCP approach and to the pid-controller to the test cases. The experiments were run on a desktop computer with Intel i71200h, RTX 3070 with 64GB of RAM running Ubuntu 22.04.
 
 \begin{table}[h]
 \caption{An Example of a Table}
@@ -142,11 +126,10 @@ Three & Four\\
    \end{figure}
    
 
-Figure Labels: Use 8 point Times New Roman for Figure labels. Use words rather than symbols or abbreviations when writing Figure axis labels to avoid confusing the reader. As an example, write the quantity Magnetization, or Magnetization, M, not just M. If including units in the label, present them within parentheses. Do not label axes only with units. In the example, write Magnetization (A/m) or Magnetization {A[m(1)]}, not just A/m. Do not label axes with a ratio of quantities and units. For example, write Temperature (K), not Temperature/K.
+
 
 \section{CONCLUSIONS}
-
-A conclusion section is not required. Although a conclusion may review the main points of the paper, do not replicate the abstract as the conclusion. A conclusion might elaborate on the importance of the work or suggest applications and extensions. 
+ 
 
 \addtolength{\textheight}{-12cm}   % This command serves to balance the column lengths
                                   % on the last page of the document manually. It shortens
@@ -166,19 +149,15 @@ A conclusion section is not required. Although a conclusion may review the main 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section*{APPENDIX}
 
-Appendixes should appear before the acknowledgment.
 
 \section*{ACKNOWLEDGMENT}
 
-The preferred spelling of the word acknowledgment in America is without an e after the g. Avoid the stilted expression, One of us (R. B. G.) thanks . . .  Instead, try R. B. G. thanks. Put sponsor acknowledgments in the unnumbered footnote on the first page.
 
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-References are important to the reader; therefore, each citation must be complete and correct. If at all possible, references should be commonly available publications.
-
-\bibliography{../references.bib}
+\bibliography{references.bib}
 \bibliographystyle{IEEEtran}
 
 \end{document}
