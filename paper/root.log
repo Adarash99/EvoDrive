@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2024.2.15)  15 FEB 2024 19:18
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2024.2.15)  16 FEB 2024 11:25
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -218,23 +218,23 @@ LaTeX Warning: Citation `chen2020learning' on page 2 undefined on input line 65.
 
 LaTeX Warning: Citation `shao2023safety' on page 2 undefined on input line 65.
 
-/home/lunet/coak12/playground/paper/root.tex:98: Missing $ inserted.
+/home/lunet/coak12/playground/paper/root.tex:99: Missing $ inserted.
 <inserted text> 
                 $
-l.98 ...s to be set: distance, direction, blocker_
+l.99 ...s to be set: distance, direction, blocker_
                                                   model, and crossing_angle.
 I've inserted a begin-math/end-math symbol since I think
 you left one out. Proceed, with fingers crossed.
 
-/home/lunet/coak12/playground/paper/root.tex:99: Missing $ inserted.
+/home/lunet/coak12/playground/paper/root.tex:100: Missing $ inserted.
 <inserted text> 
                 $
-l.99 
-     
+l.100 
+      
 I've inserted a begin-math/end-math symbol since I think
 you left one out. Proceed, with fingers crossed.
 
-[2] (./root.bbl)
+[2]
 
 ** Conference Paper **
 Before submitting the final camera ready copy, remember to:
@@ -257,15 +257,15 @@ LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
 
  ) 
 Here is how much of TeX's memory you used:
- 1932 strings out of 480247
- 32861 string characters out of 5896151
- 335066 words of memory out of 5000000
- 19892 multiletter control sequences out of 15000+600000
+ 1927 strings out of 480247
+ 32811 string characters out of 5896151
+ 334066 words of memory out of 5000000
+ 19890 multiletter control sequences out of 15000+600000
  505774 words of font info for 93 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  55i,10n,62p,3246b,301s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmbi8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on root.pdf (3 pages, 115626 bytes).
+Output written on root.pdf (3 pages, 115444 bytes).
 PDF statistics:
  65 PDF objects out of 1000 (max. 8388607)
  39 compressed objects within 1 object stream

@@ -25,3 +25,14 @@ test 3
 	no traffic
 	town 05
 	evaluations 1000
+	
+	
+test 4 
+	tcp agent 
+	ga testing with default parameters
+	no traffic
+	town 05
+	pop size 15
+	evaluations 551
+	
+

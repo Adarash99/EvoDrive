@@ -78,8 +78,9 @@ AutoFuzz
 \section{EVODRIVE FRAMEWORK}
 In this section we present our testing framework Evodrive and its main components as shown in figure ?.
 
-\subsection{Scenario generation}
+\subsection{Test case generation}
 The first component is the scenario generator. It includes the algorithm used for selecting the parameters and a yaml file generator that is read by the module running the scenario. The scenario generator selects the values for each parameter using the algorithm specified, then it makes sure the resulting scene is semantically correct and it generates the output file run the simulation. The available parameters to be modified, alongside there upper and lower limits, are as follows.
+
 \begin{enumerate}
    \item Cloudiness (0 to 100)
    \item Fog density (0 to 100)
@@ -95,7 +96,7 @@ The first component is the scenario generator. It includes the algorithm used fo
    \item Scenario (0 to 40)
 \end{enumerate}
 
-The parameters 1 to 9 are weather parameters, and are provided by CARLA to be modified as required. The initial and final waypoints are mapped to a list of viable spawn points, different for each map, provided by CARLA. Parameter 12, selects the scenario to be used in the route. Its value is mapped to the list of available scenarios. These include ?? . A special module makes sure these scenario will be spawned correctly. It checks where in the route can the scenario occur and sets all the distinct parameters of the scenario independently using customizable standard values. For example, the scenario of DynamicObjectCrossing is one of the scenarios offered by the OpenScenario package to call the scenario successfully it requires the following parameters to be set: distance, direction, blocker_model, and crossing_angle.
+Its value is mapped to the list of available scenarios. These include. A special module makes sure these scenario will be spawned correctly. It checks where in the route can the scenario occur and sets all the distinct parameters of the scenario independently using customizable standard values. For example, the scenario of DynamicObjectCrossing is one of the scenarios offered by the OpenScenario package to call the scenario successfully it requires the following parameters to be set: distance, direction, blocker_model, and crossing_angle.
 
 \subsection{Runnig the scenario}
 To run each scenario, a shell script is used as a specification file to set all which controller is going to be tested. To actual run the simulation an adapted version of the CARLA Leaderboard challenge has been used.
@@ -161,7 +162,7 @@ Three & Four\\
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\bibliography{./references.bib}
-\bibliographystyle{IEEEtran}
+%\bibliography{references.bib}
+%\bibliographystyle{IEEEtran}
 
 \end{document}

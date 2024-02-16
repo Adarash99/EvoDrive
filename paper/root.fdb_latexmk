@@ -1,14 +1,7 @@
 # Fdb version 3
-["bibtex root"] 0 "root.aux" "root.bbl" "root" 0
-  "./references.bib" 1708014721 49744 35995c5dd8ce607ef35e193ba65cbb01 ""
-  "IEEEtran.bst" 0 -1 0 ""
-  "root.aux" 0 -1 0 "pdflatex"
-  (generated)
-  "root.bbl"
-  "root.blg"
-["pdflatex"] 1708024739 "/home/lunet/coak12/playground/paper/root.tex" "root.pdf" "root" 1708024739
+["pdflatex"] 1708082701 "/home/lunet/coak12/playground/paper/root.tex" "root.pdf" "root" 1708082701
   "/etc/texmf/web2c/texmf.cnf" 1686148879 475 c0e671620eb5563b2130f56340a5fde8 ""
-  "/home/lunet/coak12/playground/paper/root.tex" 1708024739 14940 cff18b645db279eed0fed61ad25a38bf ""
+  "/home/lunet/coak12/playground/paper/root.tex" 1708082701 14658 ac8a7395e49b3b31fbc24716e42209b0 ""
   "/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc" 1165713224 4850 80dc9bab7f31fb78a000ccfed0e27cab ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/adobe/courier/pcrr7t.tfm" 1136768653 960 379cc0019370a9e0208a0a3f949f847a ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/adobe/courier/pcrr8r.tfm" 1136768653 1292 bd42be2f344128bff6d35d98474adfe3 ""
@@ -66,9 +59,8 @@
   "/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map" 1708018080 125915 807ff72f6023b33a59c427bfd156a3d1 ""
   "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1708018082 1405647 fba0361d60fe06ea424a7ed1e14ca62e ""
   "ieeeconf.cls" 1707154486 197574 c8a8a2004c9762153e255667fc17d954 ""
-  "root.aux" 1708024739 32 3985256e7290058c681f74d7a3565a19 "pdflatex"
-  "root.bbl" 1708024739 0 d41d8cd98f00b204e9800998ecf8427e "bibtex root"
-  "root.tex" 1708024739 14940 cff18b645db279eed0fed61ad25a38bf ""
+  "root.aux" 1708082701 32 3985256e7290058c681f74d7a3565a19 "pdflatex"
+  "root.tex" 1708082701 14658 ac8a7395e49b3b31fbc24716e42209b0 ""
   (generated)
   "root.aux"
   "root.log"

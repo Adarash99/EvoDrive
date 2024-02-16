@@ -9,7 +9,7 @@ carla_pid = []
 
 ### Genetic Algorithm variables ####
 
-restart_interval = 3
+restart_interval = 5
 pop_size = 15
 #n_max_gen = 30 #not used
 max_time = "10:00:00"

@@ -133,7 +133,7 @@ class MyProblem(ElementwiseProblem):
                     
         sim_n = sim_n + 1
 
-def run_ga():
+def run_ga(max_evals):
     
     n_var = 11
     
@@ -171,7 +171,7 @@ def run_ga():
                    eliminate_duplicates = True)
     
     problem = MyProblem(n_var, n_obj, 0, 0, xl, xu)
-    termination = get_termination("n_eval", 1005)
+    termination = get_termination("n_eval", max_evals)
     
     res = minimize(problem,
                    algorithm,
@@ -235,8 +235,8 @@ if __name__ == '__main__':
     global town
     
     #town = input('Town to test: ')
-    town = 'Town05'
-    max_evals = 1000
+    town = 'Town01'
+    max_evals = 500
     #tester = input('Tester to run[GA, RANDOM]: ')
     
     tester = 'GA'
@@ -250,6 +250,6 @@ if __name__ == '__main__':
     
     # run tester
     if tester == 'GA':
-        run_ga()
+        run_ga(max_evals)
     elif tester == 'RANDOM':
         run_random(max_evals)
