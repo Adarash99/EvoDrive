@@ -35,4 +35,20 @@ test 4
 	pop size 15
 	evaluations 551
 	
+	
+test 5
+	tcp agent
+	ga testing
+	no traffic
+	town 01
+	pop size 15
+	evaluations 372
+	
+test 6 
+	tcp agent
+	random
+	no traffic
+	town 01
+	evals 500
+
 

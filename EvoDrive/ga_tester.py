@@ -239,7 +239,7 @@ if __name__ == '__main__':
     max_evals = 500
     #tester = input('Tester to run[GA, RANDOM]: ')
     
-    tester = 'GA'
+    tester = 'RANDOM'
     
     # get carla pid
     for proc in psutil.process_iter():
