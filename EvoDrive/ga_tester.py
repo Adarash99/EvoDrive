@@ -79,7 +79,7 @@ def run_simulation(x):
     
     try:
         #run sim
-        os.system("./leaderboard/scripts/run_evaluation.sh")            
+        os.system("./leaderboard/run_leaderboard.sh")            
         #read json average driving score
         with open(leaderboard_results_filepath) as f:
             data = json.load(f)
@@ -237,9 +237,9 @@ if __name__ == '__main__':
     #town = input('Town to test: ')
     town = 'Town01'
     max_evals = 500
-    #tester = input('Tester to run[GA, RANDOM]: ')
+    tester = input('Tester to run[GA, RANDOM]: ')
     
-    tester = 'RANDOM'
+    #tester = 'RANDOM'
     
     # get carla pid
     for proc in psutil.process_iter():

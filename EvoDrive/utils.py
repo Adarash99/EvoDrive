@@ -169,7 +169,7 @@ def generate_xml(town, route_list, weather_settings, scen_type, scenario_attribu
         tree = ET.ElementTree(root)
         # Write XML file
         tree.write(leaderboard_input_file)
-        tree.write(routes_filepath + '/route' + str(sim_n) + '.xml')
+        #tree.write(routes_filepath + '/route' + str(sim_n) + '.xml')
         
         
 def save_route_data(sim_n):
@@ -205,7 +205,7 @@ def save_route_data(sim_n):
     
     # Write to CSV file
     
-    with open("data/data.csv",'a+', newline='') as write_obj:
-        csv_writer = csv.writer(write_obj)
-        csv_writer.writerow(csv_line)
+    # with open("data/data.csv",'a+', newline='') as write_obj:
+    #     csv_writer = csv.writer(write_obj)
+    #     csv_writer.writerow(csv_line)
        
